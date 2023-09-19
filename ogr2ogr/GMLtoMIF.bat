@@ -1,0 +1,1 @@
+for /R %f in (*.gml) do ogr2ogr -a_srs LOCAL_CS["Nonearth",UNIT["Meter",1.0]]  -f "MapInfo File" mif -dsco FORMAT="MIF" -lco ENCODING=cp1251 -lco BOUNDS=0,0,10000000,10000000 -oo EXPOSE_GML_ID=NO "%f"

@@ -2,4 +2,3 @@
 *.log
 **/.ipynb_checkpoints
 /Test/*
-*.bat

@@ -1,3 +1,4 @@
 *.zip
 *.log
 **/.ipynb_checkpoints
+/Test/*

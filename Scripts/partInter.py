@@ -23,6 +23,7 @@ class Params:
             if self.field_1 == self.field_2:
                 self.field_2 = self.field_2[8] + '_1'
         self.output_xls = params[7].valueAsText
+        self.onlyMany = params[8].value
         
 
 def table_to_data_frame(in_table, input_fields=None, where_clause=None):
@@ -73,9 +74,10 @@ def execute():
 
     df = df.round(2)
 
-    df['delete'] = df.apply(lambda row: 1 if (len(row['objects']) == 1 or set(row['objects'].keys()) - params.exceptions == set()) else 0, axis=1, result_type='reduce')
-    df = df.loc[df['delete'] == 0]
-    del df['delete']
+    if params.onlyMany:
+        df['delete'] = df.apply(lambda row: 1 if (len(row['objects']) == 1 or set(row['objects'].keys()) - params.exceptions == set()) else 0, axis=1, result_type='reduce')
+        df = df.loc[df['delete'] == 0]
+        del df['delete']
 
     writer = pd.ExcelWriter(params.output_xls)
     df = df.rename(

@@ -11,19 +11,20 @@ class Params:
     def __init__(self, params):
         self.layer_1 = params[0].valueAsText
         self.field_1 = params[1].valueAsText
-        self.layer_2 = params[2].valueAsText
-        self.field_2 = params[3].valueAsText if params[3].valueAsText != params[1].valueAsText else params[3].valueAsText + '_1'
-        self.min_intersection = params[4].value
-        self.exceptions = set(params[5].valueAsText) if params[5].valueAsText else None
-        self.output_fc = params[6].valueAsText
+        self.border = params[2].valueAsText
+        self.layer_2 = params[3].valueAsText
+        self.field_2 = params[4].valueAsText if params[4].valueAsText != params[1].valueAsText else params[4].valueAsText + '_1'
+        self.min_intersection = params[5].value
+        self.exceptions = set(params[6].valueAsText) if params[6].valueAsText else None
+        self.output_fc = params[7].valueAsText
         if arcpy.Describe(os.path.split(self.output_fc)[0]).dataType == 'Folder':
             self.output_fc += '.shp'
             self.field_1 = self.field_1[:10] if len(self.field_1) > 10 else self.field_1
             self.field_2 = self.field_2[:10] if len(self.field_2) > 10 else self.field_2
             if self.field_1 == self.field_2:
-                self.field_2 = self.field_2[8] + '_1'
-        self.output_xls = params[7].valueAsText
-        self.onlyMany = params[8].value
+                self.field_2 = self.field_2[:8] + '_1'
+        self.output_xls = params[8].valueAsText
+        self.onlyMany = params[9].value
         
 
 def table_to_data_frame(in_table, input_fields=None, where_clause=None):
@@ -46,7 +47,23 @@ def table_to_data_frame(in_table, input_fields=None, where_clause=None):
 
 def execute():
     params = Params(arcpy.GetParameterInfo())
-    arcpy.analysis.PairwiseIntersect((params.layer_1, params.layer_2), params.output_fc, "all", "", "input")
+
+    memFc = None
+    if params.border:
+        geoms = []
+        erase = [row[0] for row in arcpy.da.SearchCursor(params.layer_1, 'SHAPE@')]
+        for row in arcpy.da.SearchCursor(params.border, 'SHAPE@'):
+            geom = row[0]
+            for other in erase:
+                geom = geom.difference(other)
+            geoms.append([geom, 'Вне границ'])
+        df = pd.DataFrame(geoms, columns=['SHAPE', params.field_1])
+        arcpy.AddMessage(df)
+        memFc = r'memory/temp_merge'
+        arcpy.management.CopyFeatures(df, r'memory/temp')
+        arcpy.management.Merge((params.layer_1, r'memory/temp'), memFc, add_source='ADD_SOURCE_INFO')
+
+    arcpy.analysis.PairwiseIntersect((memFc or params.layer_1, params.layer_2), params.output_fc, "all", "", "input")
     
 
     df = table_to_data_frame(params.output_fc)

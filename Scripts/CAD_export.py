@@ -80,9 +80,9 @@ def execute():
     lines = msp.query(f'LWPOLYLINE')
     for line in lines.entities:
         line.dxf.color = 7
-    def sort_entities(entity):
-        return ['HATCH', 'LWPOLYLINE'].index(entity.dxf.dxftype)
-    msp.entity_space.entities = sorted(msp.entity_space.entities, key=sort_entities)
+    # def sort_entities(entity):
+    #     return ['HATCH', 'LWPOLYLINE'].index(entity.dxf.dxftype)
+    # msp.entity_space.entities = sorted(msp.entity_space.entities, key=sort_entities)
 
     dxf.saveas(output_file)
     arcpy.env.addOutputToMap = True

@@ -8,6 +8,7 @@ from osgeo import ogr
 import os
 import shutil
 from itertools import count
+import difflib
 
 import pandas as pd
 import json
@@ -87,11 +88,21 @@ class P10:
         required_columns_list = [col for col in self.p10[r_name].keys()]
         required_columns = set(required_columns_list)
         rename_columns = dict()
-        for col in required_columns:
-            if col not in df.columns:
-                for col2 in df.columns:
-                    if col2 in col:
-                        rename_columns[col2] = col
+        # for col in required_columns:
+        #     if col not in df.columns:
+        #         for col2 in df.columns:
+        #             if col2 in col:
+        #                 rename_columns[col2] = col
+        missing_columns = set(required_columns) - set(df.columns.to_list())
+        last_columns = set(df.columns.to_list()) - set(required_columns)
+        for col in missing_columns:
+            closest = difflib.get_close_matches(col, last_columns, 1)
+            if len(closest) == 0:
+                continue
+            closest = closest[0]
+            rename_columns[closest] = col
+            last_columns.remove(closest)
+
         df = df.rename(columns=rename_columns)
         missing_columns = set(required_columns) - set(df.columns.to_list())
         check_columns = required_columns - missing_columns

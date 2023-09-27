@@ -11,6 +11,7 @@ from itertools import count
 import difflib
 
 import pandas as pd
+from numpy import int64, float64
 import json
 
 import xml.etree.ElementTree as et
@@ -180,13 +181,13 @@ def make_valid(row_object, empty_value, OKTMO, name, p10):
             value = ''
         
         if p10.get(name).get(col)[1] == 'Целое':
-            if isinstance(value, (int, numpy.int64)):
+            if isinstance(value, (int, int64)):
                 value = int(value)
             else:
                 value = 0
 
         if p10.get(name).get(col)[1] == 'Вещественное':
-            if isinstance(value, (float, numpy.float64)):
+            if isinstance(value, (float, float64)):
                 value = round(value, 2)
             else:
                 value = 0            
@@ -199,7 +200,7 @@ def make_valid(row_object, empty_value, OKTMO, name, p10):
             
 
                 
-        if isinstance(value, (float, numpy.float64)):
+        if isinstance(value, (float, float64)):
             value = round(value, 2)
             
 

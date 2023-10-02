@@ -232,7 +232,7 @@ def execute():
                 if domain:
                     # Проверяем есть ли значение в словаре
                     if vars()[col] in domain:
-                        pass
+                        continue
                     else:
                         errors.append([b_name, row_index, col, errors.p10[r_name][col][4], 'Значение не входит в словарь', vars()[col], col_required, None])
                         continue

@@ -1,0 +1,1 @@
+ogr2ogr -f "GML" "Название карты.gml" -dsco FORMAT=GML3.2 -dsco PREFIX=fgistp -dsco TARGET_NAMESPACE=http://fgistp -dsco "XSISCHEMAURI=http://fgistp Doc.20201000000.xsd" .

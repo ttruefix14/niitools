@@ -164,7 +164,7 @@ def execute():
 
 
     for layer in layers:
-        print(layer)
+        arcpy.AddMessage(layer)
 
         df = tab_to_df(layer)
         if len(df) == 0:

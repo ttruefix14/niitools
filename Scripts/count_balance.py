@@ -168,13 +168,14 @@ def execute():
 
 
     FZ_NP = table_to_data_frame(os.path.join(output_db, 'FZ_NP'), ['NAME', 'SETTL_TYPE', 'Ext_Zone_Code'])
-    FZ_NP['Shape_Area'] = FZ_NP.apply(lambda row: row["SHAPE@"].area, axis=1, result_type='reduce')
+    # FZ_NP['Shape_Area'] = FZ_NP.apply(lambda row: row["SHAPE@"].area, axis=1, result_type='reduce')
+    FZ_NP['Shape_Area'] = FZ_NP.apply(lambda row: row["SHAPE@"].area if row["SHAPE@"].area > 500 else (501 if row["SHAPE@"].area > 100 else 0), axis=1, result_type='reduce')
     SI_NP = table_to_data_frame(os.path.join(output_db, 'SI_NP'), ['NAME', 'SETTL_TYPE', 'Ext_Zone_Code'])
-    SI_NP['Shape_Area'] = SI_NP.apply(lambda row: row["SHAPE@"].area, axis=1, result_type='reduce')
+    SI_NP['Shape_Area'] = SI_NP.apply(lambda row: row["SHAPE@"].area if row["SHAPE@"].area > 500 else (501 if row["SHAPE@"].area > 100 else 0), axis=1, result_type='reduce')
     FZ_MO = table_to_data_frame(os.path.join(output_db, 'FZ_MO'), ['Ext_Zone_Code'])
-    FZ_MO['Shape_Area'] = FZ_MO.apply(lambda row: row["SHAPE@"].area, axis=1, result_type='reduce')
+    FZ_MO['Shape_Area'] = FZ_MO.apply(lambda row: row["SHAPE@"].area if row["SHAPE@"].area > 500 else (501 if row["SHAPE@"].area > 100 else 0), axis=1, result_type='reduce')
     SI_MO = table_to_data_frame(os.path.join(output_db, 'SI_MO'), ['Ext_Zone_Code'])
-    SI_MO['Shape_Area'] = SI_MO.apply(lambda row: row["SHAPE@"].area, axis=1, result_type='reduce')
+    SI_MO['Shape_Area'] = SI_MO.apply(lambda row: row["SHAPE@"].area if row["SHAPE@"].area > 500 else (501 if row["SHAPE@"].area > 100 else 0), axis=1, result_type='reduce')
 
     # Задаем определенное поле для площади НП
     fields_AdmeNP = ['NAME', 'SETTL_TYPE', 'NOTE']

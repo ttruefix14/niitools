@@ -108,7 +108,7 @@ class Errors:
         try:
             date.strftime('%Y/%m/%d')
         except:
-            self.append([b_name, row_index, col, None, 'Неверный формат даты', date, col_required, None, None])
+            self.append([b_name, row_index, col, None, 'Неверный формат даты', date, col_required, None])
         return
         
     def good_str(self, string):

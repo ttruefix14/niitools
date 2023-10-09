@@ -509,7 +509,7 @@ def execute():
                 for i in range(len(si)):
                     if round(si_diff, 1) == 0:
                         break
-                    if si['SI'].iloc[i] == 0 and si['SI'].sum() != 0:
+                    if (si['SI'].iloc[i] - 0.1) <= 0 and si['SI'].sum() != 0:
                         continue
                     if si_diff > 0:
                         si['SI'].iloc[i] += 0.1
@@ -524,7 +524,7 @@ def execute():
                 for i in range(len(fz)):
                     if round(fz_diff, 1) == 0:
                         break
-                    if fz['SI+PLAN'].iloc[i] == 0 and fz['SI+PLAN'].sum() != 0:
+                    if (fz['SI+PLAN'].iloc[i] - 0.1) <= 0 and fz['SI+PLAN'].sum() != 0:
                         continue
                     if fz_diff > 0:
                         fz['SI+PLAN'].iloc[i] += 0.1

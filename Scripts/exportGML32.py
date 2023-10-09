@@ -406,7 +406,7 @@ def save_gml(gml, dirname, filename, p10):
         xele = et.SubElement(stand, 'GeometryType')
         xele.text = geom_types[layer_params[1]]
         for field in fields:
-            arcpy.AddMessage(layer_params[0] + ' ' + field)
+            # arcpy.AddMessage(layer_params[0] + ' ' + field)
             xele = et.SubElement(stand, 'PropertyDefn')
             fele = et.SubElement(xele, 'Name')
             fele.text = field
@@ -507,6 +507,8 @@ def execute():
         # Проверка соответствия названия слоя десятому приказу
         b_name = arcpy.Describe(tab).baseName
         r_name = b_name.split('.')[-1].split('_')[0]
+
+        arcpy.AddMessage(b_name)
         
         if not p10.is_p10_layer(r_name):
             continue

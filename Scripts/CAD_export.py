@@ -61,14 +61,16 @@ def execute():
     for layer in dxf.layers:
         if layer.dxf.name in sql_dict:
             lines = msp.query(f'LWPOLYLINE[layer=="{layer.dxf.name}"]')
-            hatch = msp.add_hatch(dxfattribs={"layer": layer.dxf.name, "color": 7})
+            hatch = msp.add_hatch(dxfattribs={"layer": layer.dxf.name, "color": 0})
             hatch.rgb = colors_dict[layer.dxf.name]
             if layer.dxf.name[-1] == '2': 
-                hatch2 = msp.add_hatch(dxfattribs={"layer": layer.dxf.name, "color": 7})
-                hatch2.set_pattern_fill(name='ANSI31', color=7, scale=150, angle=0, double=0, style=1, pattern_type=1, definition=None)
+                hatch2 = msp.add_hatch(dxfattribs={"layer": layer.dxf.name, "color": 0})
+                hatch2.set_pattern_fill(name='ANSI31', color=0, scale=150, angle=0, double=0, style=1, pattern_type=1, definition=None)
+                hatch2.rgb = (0, 0, 0)
             if layer.dxf.name[:-2] == cemetery: 
-                hatch3 = msp.add_hatch(dxfattribs={"layer": layer.dxf.name, "color": 7})
-                hatch3.set_pattern_fill(name='CROSS', color=7, scale=100, angle=0, double=0, style=1, pattern_type=1, definition=None)
+                hatch3 = msp.add_hatch(dxfattribs={"layer": layer.dxf.name, "color": 0})
+                hatch3.set_pattern_fill(name='CROSS', color=0, scale=100, angle=0, double=0, style=1, pattern_type=1, definition=None)
+                hatch3.rgb = (0, 0, 0)
             for line in lines:
                 hatch.paths.add_polyline_path([i for i in line.vertices()])
                 if layer.dxf.name[-1] == '2': 
@@ -79,10 +81,9 @@ def execute():
 
     lines = msp.query(f'LWPOLYLINE')
     for line in lines.entities:
-        line.dxf.color = 7
-    # def sort_entities(entity):
-    #     return ['HATCH', 'LWPOLYLINE'].index(entity.dxf.dxftype)
-    # msp.entity_space.entities = sorted(msp.entity_space.entities, key=sort_entities)
+        line.rgb = (0, 0, 0)
+    msp.entity_space.entities = sorted(msp.entity_space.entities, key=lambda entity: ['HATCH', 'LWPOLYLINE'].index(entity.dxf.dxftype))
+
 
     dxf.saveas(output_file)
     arcpy.env.addOutputToMap = True

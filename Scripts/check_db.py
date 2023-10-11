@@ -115,7 +115,7 @@ class Errors:
         if string == None or string.strip() == '':
             return False, "Пустая строка", ''
         string = str(string)
-        bad = re.findall(r'[&\n\t\r\'<>\u0008]+', string)
+        bad = re.findall(r'[&\n\t\r\'<>\u0008\x02]+', string)
         if bad:
             return False, "Недопустимые символы в строке (Знак табуляции \\t, знак абзаца \\n, знак возврата каретки \\r, одинарные кавычки \', знаки < >, &, x08(бекспейс в юникоде))", bad
         else:
@@ -164,7 +164,7 @@ def execute():
 
 
     for layer in layers:
-        arcpy.AddMessage(layer)
+        arcpy.AddMessage(layer.name)
 
         df = tab_to_df(layer)
         if len(df) == 0:

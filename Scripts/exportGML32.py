@@ -205,6 +205,7 @@ def make_valid(row_object, empty_value, OKTMO, name, p10):
             
 
         row_object[col] = str(value)
+        row_object[col] = row_object[col].replace("\x02", "")
     return row_object
 
 def to_multigeo(geom):
@@ -373,7 +374,9 @@ def save_gml(gml, dirname, filename, p10):
     xmltree = et.ElementTree(gml)
 
     xmlstr = et.tostring(xmltree.getroot(), encoding='UTF-8', short_empty_elements=False)
+
     xmlpretty = minidom.parseString(xmlstr).toprettyxml(indent='\t', newl='\n', encoding='UTF-8')
+
     with open(os.path.join(dirname, filename), 'wb') as f:
         f.write(xmlpretty)
         

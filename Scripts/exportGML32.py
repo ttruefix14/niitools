@@ -23,8 +23,9 @@ import xml.dom.minidom as minidom
 class Params:
     """Входные параметры инструмента"""
     def __init__(self, params):
-        xsds = {'Проект схемы территориального планирования Российской Федерации в области федерального транспорта (железнодорожного, воздушного, морского, внутреннего водного, трубопроводного) и автомобильных дорог федерального значения': 'Doc.10501010000.xsd', 'Проект схемы территориального планирования Российской Федерации в области обороны страны и безопасности государства': 'Doc.10503000000.xsd', 'Проект схемы территориального планирования Российской Федерации в области энергетики': 'Doc.10504000000.xsd', 'Проект схемы территориального планирования Российской Федерации в области высшего образования': 'Doc.10505000000.xsd', 'Проект схемы территориального планирования Российской Федерации в области здравоохранения': 'Doc.10506000000.xsd', 'Проект схемы территориального планирования Российской Федерации в иной области': 'Doc.10507000000.xsd', 'Проект схемы территориального планирования Российской Федерации в нескольких областях': 'Doc.10508000000.xsd', 'Проект схемы территориального планирования на часть территории Российской Федерации в одной или нескольких областях, подготовленный по решению Президента Российской Федерации или Правительства Российской Федерации': 'Doc.10509000000.xsd', 'Проекты схем территориального планирования двух и более субъектов Российской Федерации': 'Doc.10801000000.xsd', 'Проекты схем территориального планирования субъектов Российской Федерации': 'Doc.10803010000.xsd', 'Проекты генеральных планов городов федерального значения': 'Doc.10804010000.xsd', 'Проекты схем территориального планирования муниципальных районов': 'Doc.20101000000.xsd', 'Проекты генеральных планов поселений и генеральных планов городских округов': 'Doc.20201000000.xsd', 'Схема территориального планирования Российской Федерации в области федерального транспорта (железнодорожного, воздушного, морского, внутреннего водного, трубопроводного) и автомобильных дорог федерального значения': 'Doc.10601010000.xsd', 'Схема территориального планирования Российской Федерации в области обороны страны и безопасности государства': 'Doc.10603000000.xsd', 'Схема территориального планирования Российской Федерации в области энергетики': 'Doc.10604000000.xsd', 'Схема территориального планирования Российской Федерации в области высшего образования': 'Doc.10605000000.xsd', 'Схема территориального планирования Российской Федерации в области здравоохранения': 'Doc.10606000000.xsd', 'Схема территориального планирования Российской Федерации в иной области': 'Doc.10607000000.xsd', 'Схема территориального планирования Российской Федерации в нескольких областях': 'Doc.10608000000.xsd', 'Схема территориального планирования на часть территории Российской Федерации в одной или нескольких областях, подготовленная по решению Президента Российской Федерации или Правительства Российской Федерации': 'Doc.10609000000.xsd', 'Схемы территориального планирования двух и более субъектов Российской Федерации': 'Doc.10802000000.xsd', 'Схемы территориального планирования субъектов Российской Федерации': 'Doc.10803050000.xsd', 'Генеральные планы городов федерального значения': 'Doc.10804040000.xsd', 'Схемы территориального планирования муниципальных районов': 'Doc.20104000000.xsd', 'Генеральные планы поселений и генеральные планы городских округов': 'Doc.20204000000.xsd'}
-        
+        with open(r'..\Defaults\xsds.json', encoding='utf-8') as f:
+            xsds = json.load(f)
+
         self.xsd = xsds[params[0].valueAsText] 
 
         self.p10 = params[1].valueAsText
@@ -402,6 +403,8 @@ def splitXml(xmlstr, splitSize, dirname, filename):
     return n
 
 def save_gml(gml, dirname, filename, p10, splitSize=None):
+    if len(list(gml)) == 1:
+        return
     lowerCorner = list(list(list(gml)[0])[0])[0]
     lowerCorner.text = lowerCorner.text.format(gml_extent[0], gml_extent[1])
     upperCorner = list(list(list(gml)[0])[0])[1]
@@ -517,10 +520,10 @@ def execute():
     else:
         clipping_mask = None
 
-    border_gml, border_counter = create_gml(params.xsd)
-    omz_gml, omz_counter = create_gml(params.xsd)
-    fz_gml, fz_counter = create_gml(params.xsd)
-    mo_gml, mo_counter = create_gml(params.xsd)
+    border_gml, border_counter = create_gml(params.xsd[0])
+    omz_gml, omz_counter = create_gml(params.xsd[0])
+    fz_gml, fz_counter = create_gml(params.xsd[0])
+    mo_gml, mo_counter = create_gml(params.xsd[0])
 
     for tab in layers:
         if mask_layer:
@@ -582,7 +585,7 @@ def execute():
         fc_to_gml(fz_table, columns_to_gml, fz_gml, name, params.empty_value, params.OKTMO, clipping_mask, fz_counter, no_clip, p10.p10)
         
         if 'STATUS' in table.columns and 'REG_STATUS' in table.columns:
-            omz_table = table.loc[table['STATUS'].isin([2, 3]) & table['REG_STATUS'].isin([4, 5]) & ~table['CLASSID'].isin(fz_loc)]
+            omz_table = table.loc[table['STATUS'].isin([2, 3]) & table['REG_STATUS'].isin(params.xsd[1]) & ~table['CLASSID'].isin(fz_loc)]
             if omz_loc:
                 omz_table = omz_table.loc[~omz_table['CLASSID'].isin(omz_loc)]
             if params.omz_definition:
@@ -593,7 +596,7 @@ def execute():
 
             fc_to_gml(omz_table, columns_to_gml, omz_gml, name, params.empty_value, params.OKTMO, clipping_mask, omz_counter, no_clip, p10.p10)
             
-            mo_table = table.loc[~table['CLASSID'].isin(mo_loc) & (~table['STATUS'].isin([2, 3]) | (table['STATUS'].isin([2, 3]) & ~table['REG_STATUS'].isin([4, 5])))]
+            mo_table = table.loc[~table['CLASSID'].isin(mo_loc) & (~table['STATUS'].isin([2, 3]) | (table['STATUS'].isin([2, 3]) & ~table['REG_STATUS'].isin(params.xsd[1])))]
         else:
             mo_table = table.loc[~table['CLASSID'].isin(mo_loc)]
             
@@ -623,8 +626,6 @@ def execute():
             else:
                 shutil.copy(os.path.join(params.output_dirname, filename), os.path.join(params.output_dirname, 'Материалы по обоснованию в формате xml_' + re.search(r'_(.*)\.', filename).groups(0)[0] + '.xml'))
                 
-        
-        shutil.copy(os.path.join(params.output_dirname, 'Материалы по обоснованию в виде карт.gml'), os.path.join(params.output_dirname, 'Материалы по обоснованию в формате xml.xml'))    
 
 if __name__ == '__main__':
 

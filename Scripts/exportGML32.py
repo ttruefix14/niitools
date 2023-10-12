@@ -9,6 +9,8 @@ import os
 import shutil
 from itertools import count
 import difflib
+import re
+import regex
 
 import pandas as pd
 from numpy import int64, float64
@@ -16,6 +18,7 @@ import json
 
 import xml.etree.ElementTree as et
 import xml.dom.minidom as minidom
+
 
 class Params:
     """Входные параметры инструмента"""
@@ -46,6 +49,8 @@ class Params:
         self.geoTransfm = params[11].valueAsText if params[11].value else None
 
         self.customGeoTransfm = params[12].valueAsText
+
+        self.splitSize = params[13].value
 
        
 
@@ -205,7 +210,6 @@ def make_valid(row_object, empty_value, OKTMO, name, p10):
             
 
         row_object[col] = str(value)
-        row_object[col] = row_object[col].replace("\x02", "")
     return row_object
 
 def to_multigeo(geom):
@@ -355,7 +359,49 @@ def get_ID(name, gml_id):
 
     return f'{name}.{next(gml_id)}'
 
-def save_gml(gml, dirname, filename, p10):
+def escape_xml_illegal_chars(unicodeString, replaceWith=r''):
+	return re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1F\uD800-\uDFFF\uFFFE\uFFFF]', replaceWith, unicodeString)
+
+def splitXml(xmlstr, splitSize, dirname, filename):
+    blank = [xmlstr.decode('utf-8')[:regex.search(r"</.*boundedBy>\n*\t*", xmlstr.decode('utf-8')).end()], regex.search(r"(</.*FeatureCollection>)", xmlstr.decode('utf-8')).groups()[0]]
+
+    blank_size = len(blank[0].encode('utf-8')) + len(blank[1].encode('utf-8'))
+
+    current = xmlstr.decode('utf-8')[regex.search(r"</.*boundedBy>\n*\t*", xmlstr.decode('utf-8')).end():regex.search(r"(</.*FeatureCollection>)", xmlstr.decode('utf-8')).start()].encode('utf-8')
+
+    n = 1
+
+    byteSplitSize = (1024 * 1024) * splitSize
+    while byteSplitSize - (len(current) + blank_size) < 0:
+        if len(current) <= 2:
+            break
+        if len(current) > (byteSplitSize - blank_size):
+            chunk = current[:byteSplitSize - blank_size].decode('utf-8')
+        else:
+            chunk = current.decode('utf-8')
+        current_bord = regex.search(r"</.*featureMember>\n*\t*", chunk, flags=regex.REVERSE)
+        # arcpy.AddMessage("Основной: " + '\n' + chunk[-30000:] + '\n' + str(current_bord))
+        result = blank[0] + chunk[:current_bord.end()] + blank[1]
+        result = re.sub(r"(\t+)(</.*FeatureCollection>)", r"\2", result)
+        with open(os.path.join(dirname, f'{filename[:-4]}_{n}.gml'), 'wb') as f:
+            f.write(result.encode('utf-8'))
+        current = current.decode('utf-8')[current_bord.end():].encode('utf-8')
+
+        n += 1
+    else:
+        if len(current) > 2:
+            if len(current) > (byteSplitSize - blank_size):
+                chunk = current[:byteSplitSize - blank_size].decode('utf-8')
+            else:
+                chunk = current.decode('utf-8')
+            current_bord = regex.search(r"</.*featureMember>\n*\t*", chunk, flags=regex.REVERSE)
+            result = blank[0] + chunk[:current_bord.end()] + blank[1]
+            with open(os.path.join(dirname, f'{filename[:-4]}_{n}.gml'), 'wb') as f:
+                f.write(result.encode('utf-8'))
+
+    return n
+
+def save_gml(gml, dirname, filename, p10, splitSize=None):
     lowerCorner = list(list(list(gml)[0])[0])[0]
     lowerCorner.text = lowerCorner.text.format(gml_extent[0], gml_extent[1])
     upperCorner = list(list(list(gml)[0])[0])[1]
@@ -374,83 +420,72 @@ def save_gml(gml, dirname, filename, p10):
     xmltree = et.ElementTree(gml)
 
     xmlstr = et.tostring(xmltree.getroot(), encoding='UTF-8', short_empty_elements=False)
+    xmlstr = escape_xml_illegal_chars(xmlstr.decode('utf-8')).encode('utf-8')
 
     xmlpretty = minidom.parseString(xmlstr).toprettyxml(indent='\t', newl='\n', encoding='UTF-8')
 
-    with open(os.path.join(dirname, filename), 'wb') as f:
-        f.write(xmlpretty)
+    if splitSize and len(xmlpretty) / ((1024 * 1024) * splitSize) > 1:
+        splitedXmlsNumber = splitXml(xmlpretty, splitSize, dirname, filename)
+    else:
+        splitedXmlsNumber = -1
+        with open(os.path.join(dirname, filename), 'wb') as f:
+                f.write(xmlpretty)
         
-    gml_path = os.path.join(dirname, filename)
-    gfs_path = os.path.join(os.path.split(gml_path)[0], os.path.split(gml_path)[1].replace('gml', 'gfs'))
-
-    # НОВАЯ ПОПЫТКА
-    
-    gfs = et.Element('GMLFeatureClassList')
-
-    layer_list = []
-    geom_types = {'Point': '4', 'Line': '5', 'Polygon': '6'}
-    #geom_types = {'Point': '4', 'LineString': '5', 'Polygon': '6'}
-    for fm in gml.iter('fgistp:featureMember'):
-        layer_name = list(fm)[0].tag.replace('fgistp:', '')
-        layer_params = layer_name.split('_')
-        #layer_type = list(list(list(list(fm)[0])[-1])[0])[0].tag.split('}')[1]
-        #layer_params = [layer_name, layer_type]
-        if layer_name in layer_list:
-            continue
+    for i in range(1, (splitedXmlsNumber + 1) or 2):
+        if splitedXmlsNumber == -1:
+            gml_path = os.path.join(dirname, filename)
+            gfs_path = os.path.join(os.path.split(gml_path)[0], os.path.split(gml_path)[1].replace('gml', 'gfs'))
         else:
-            layer_list.append(layer_name)
-
-        fields = [elem.tag.replace('fgistp:', '') for elem in list(filter(lambda x: 'fgistp:' in x.tag, list(list(fm)[0])))]
-        stand = et.SubElement(gfs, 'GMLFeatureClass')
-        xele = et.SubElement(stand, 'Name')
-        xele.text = layer_name
-        xele = et.SubElement(stand, 'ElementPath')
-        xele.text = layer_name
-        xele = et.SubElement(stand, 'GeometryType')
-        xele.text = geom_types[layer_params[1]]
-        for field in fields:
-            # arcpy.AddMessage(layer_params[0] + ' ' + field)
-            xele = et.SubElement(stand, 'PropertyDefn')
-            fele = et.SubElement(xele, 'Name')
-            fele.text = field
-            fele = et.SubElement(xele, 'ElementPath')
-            fele.text = field
-            field_type = et.SubElement(xele, 'Type')
-            required_type = p10.get(layer_params[0]).get(field)[1]
-            if required_type == 'Целое' or field == 'CLASSID':
-                field_type.text = 'Integer'
-            elif required_type == 'Вещественное':
-                field_type.text = 'Real'
-            else:
-                field_type.text = 'String'
+            gml_path = os.path.join(dirname, filename[:-4] + f'_{i}.gml')
+            gfs_path = os.path.join(os.path.split(gml_path)[0], os.path.split(gml_path)[1].replace('gml', 'gfs'))
+        # НОВАЯ ПОПЫТКА
         
-    xmlstr = et.tostring(gfs, short_empty_elements=False)
-    xmlpretty = minidom.parseString(xmlstr).toprettyxml(indent='  ', newl='\n')
-    with open(gfs_path, 'w') as f:
-        f.write(xmlpretty)
-    # НОВАЯ ПОПЫТКА
+        gfs = et.Element('GMLFeatureClassList')
 
-    # if os.path.isfile(gfs_path):
-    #     os.remove(gfs_path)
+        layer_list = []
+        geom_types = {'Point': '4', 'Line': '5', 'Polygon': '6'}
+        #geom_types = {'Point': '4', 'LineString': '5', 'Polygon': '6'}
+        for fm in gml.iter('fgistp:featureMember'):
+            layer_name = list(fm)[0].tag.replace('fgistp:', '')
+            layer_params = layer_name.split('_')
+            #layer_type = list(list(list(list(fm)[0])[-1])[0])[0].tag.split('}')[1]
+            #layer_params = [layer_name, layer_type]
+            if layer_name in layer_list:
+                continue
+            else:
+                layer_list.append(layer_name)
 
-    # ogr.Open(gml_path) # открываем GML для создания файла GFS
-    
-    # parser = et.XMLParser(target=CommentedTreeBuilder(), encoding='utf-8')
-    # gfs = et.parse(gfs_path, parser)
-    # for layer in gfs.iter('GMLFeatureClass'):
-    #     layer_name = layer[1].text
-    #     for field in layer.iter('PropertyDefn'): 
-    #         field_name, field_type = field[1], field[2]
-    #         required_type = p10.get(layer_name.split('_')[0]).get(field_name.text)[1]
-    #         if required_type == 'Целое' or field_name.text == 'CLASSID':
-    #             field_type.text = 'Integer'
-    #         elif required_type == 'Вещественное':
-    #             field_type.text = 'Real'
-    #         else:
-    #             field_type.text = 'String'
-    # xmlstr = et.tostring(gfs.getroot(), encoding='UTF-8')
-    # with open(os.path.join(gfs_path), 'wb') as f:
-    #     f.write(xmlstr)
+            fields = [elem.tag.replace('fgistp:', '') for elem in list(filter(lambda x: 'fgistp:' in x.tag, list(list(fm)[0])))]
+            stand = et.SubElement(gfs, 'GMLFeatureClass')
+            xele = et.SubElement(stand, 'Name')
+            xele.text = layer_name
+            xele = et.SubElement(stand, 'ElementPath')
+            xele.text = layer_name
+            xele = et.SubElement(stand, 'GeometryType')
+            xele.text = geom_types[layer_params[1]]
+            for field in fields:
+                # arcpy.AddMessage(layer_params[0] + ' ' + field)
+                xele = et.SubElement(stand, 'PropertyDefn')
+                fele = et.SubElement(xele, 'Name')
+                fele.text = field
+                fele = et.SubElement(xele, 'ElementPath')
+                fele.text = field
+                field_type = et.SubElement(xele, 'Type')
+                required_type = p10.get(layer_params[0]).get(field)[1]
+                if required_type == 'Целое' or field == 'CLASSID':
+                    field_type.text = 'Integer'
+                elif required_type == 'Вещественное':
+                    field_type.text = 'Real'
+                else:
+                    field_type.text = 'String'
+            
+        xmlstr = et.tostring(gfs, short_empty_elements=False)
+        xmlstr = escape_xml_illegal_chars(xmlstr.decode('utf-8')).encode('utf-8')
+
+        xmlpretty = minidom.parseString(xmlstr).toprettyxml(indent='  ', newl='\n')
+        with open(gfs_path, 'w') as f:
+            f.write(xmlpretty)
+
 
 def execute():
     params = Params(arcpy.GetParameterInfo())
@@ -568,13 +603,28 @@ def execute():
     if len(bad_geoms) > 1 or len(null_geoms) > 1:
         arcpy.AddMessage('ПРИСУТСТВУЮТ НЕ ИСПРАВЛЕННЫЕ ОШИБКИ ГЕОМЕТРИИ')
 
-    save_gml(border_gml, params.output_dirname, 'Карта границ населенных пунктов (в том числе границ образуемых населенных пунктов).gml', p10.p10)
-    save_gml(omz_gml, params.output_dirname, 'Карта планируемого размещения объектов.gml', p10.p10)
-    save_gml(fz_gml, params.output_dirname, 'Карта функциональных зон поселения или городского округа.gml', p10.p10)
-    save_gml(mo_gml, params.output_dirname, 'Материалы по обоснованию в виде карт.gml', p10.p10)
+    save_gml(border_gml, params.output_dirname, 'Карта границ населенных пунктов (в том числе границ образуемых населенных пунктов).gml', p10.p10, params.splitSize)
+    save_gml(omz_gml, params.output_dirname, 'Карта планируемого размещения объектов.gml', p10.p10, params.splitSize)
+    save_gml(fz_gml, params.output_dirname, 'Карта функциональных зон поселения или городского округа.gml', p10.p10, params.splitSize)
+    save_gml(mo_gml, params.output_dirname, 'Материалы по обоснованию в виде карт.gml', p10.p10, params.splitSize)
 
-    shutil.copy(os.path.join(params.output_dirname, 'Карта планируемого размещения объектов.gml'), os.path.join(params.output_dirname, 'Приложение к положению о территориальном планировании в форме электронного документа.xml'))
-    shutil.copy(os.path.join(params.output_dirname, 'Материалы по обоснованию в виде карт.gml'), os.path.join(params.output_dirname, 'Материалы по обоснованию в формате xml.xml'))    
+    for filename in os.listdir(params.output_dirname):
+        if not filename.endswith(".gml"):
+            continue
+        if 'Карта планируемого размещения объектов' in filename:
+            if filename == 'Карта планируемого размещения объектов.gml':
+                shutil.copy(os.path.join(params.output_dirname, 'Карта планируемого размещения объектов.gml'), os.path.join(params.output_dirname, 'Приложение к положению о территориальном планировании в форме электронного документа.xml'))
+            else:
+                shutil.copy(os.path.join(params.output_dirname, filename), os.path.join(params.output_dirname, 'Приложение к положению о территориальном планировании в форме электронного документа_' + re.search(r'_(.*)\.', filename).groups(0)[0] + '.xml'))
+        
+        if 'Материалы по обоснованию в виде карт' in filename:
+            if filename == 'Материалы по обоснованию в виде карт.gml':
+                shutil.copy(os.path.join(params.output_dirname, 'Материалы по обоснованию в виде карт.gml'), os.path.join(params.output_dirname, 'Материалы по обоснованию в формате xml.xml'))
+            else:
+                shutil.copy(os.path.join(params.output_dirname, filename), os.path.join(params.output_dirname, 'Материалы по обоснованию в формате xml_' + re.search(r'_(.*)\.', filename).groups(0)[0] + '.xml'))
+                
+        
+        shutil.copy(os.path.join(params.output_dirname, 'Материалы по обоснованию в виде карт.gml'), os.path.join(params.output_dirname, 'Материалы по обоснованию в формате xml.xml'))    
 
 if __name__ == '__main__':
 

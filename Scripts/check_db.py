@@ -116,6 +116,7 @@ class Errors:
             return False, "Пустая строка", ''
         string = str(string)
         bad = re.findall(r'[&\n\t\r\'<>\u0008\x02]+', string)
+        bad = re.findall(r'[\x00-\x08\x0b\x0c\x0e-\x1F\uD800-\uDFFF\uFFFE\uFFFF]+', string)
         if bad:
             return False, "Недопустимые символы в строке (Знак табуляции \\t, знак абзаца \\n, знак возврата каретки \\r, одинарные кавычки \', знаки < >, &, x08(бекспейс в юникоде))", bad
         else:

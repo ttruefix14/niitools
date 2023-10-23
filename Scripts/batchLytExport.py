@@ -36,9 +36,9 @@ def execute():
     lyts = [lyt for lyt in aprx.listLayouts() if lyt.name in lyt_names]
 
     if outputFormat == 'JPEG':
-        exportToJPEG(lyts, dpi, quality, outputFolder, aprx)
+        exportToJPEG(lyts, dpi, quality, outputFolder)
     elif outputFormat == 'PDF':
-        exportToPDF(lyts, dpi, quality, outputAsImage, outputFolder, aprx)
+        exportToPDF(lyts, dpi, quality, outputAsImage, outputFolder)
     else:
         arcpy.AddMessage(f'Формат {outputFormat} не поддерживается')
 

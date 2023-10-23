@@ -1,9 +1,16 @@
 import arcpy
 def execute():
-    inFc = arcpy.GetParameter(0) or "23_02_0804000_2023-09-20"
+    inFc = arcpy.GetParameter(0)
     cad_field = arcpy.GetParameterAsText(1)
     part_field = arcpy.GetParameterAsText(2)
     fields = {field.name: field for field in arcpy.ListFields(inFc)}
+    if 'CadNumber' in fields:
+        if fields['CadNumber'].type == 'String':
+            cad_field = 'CadNumber'
+    if 'part' in fields:
+        if fields['part'].type == 'String':
+            part_field = 'part'    
+
     if not cad_field:
         cad_field = 'CadNumber'
         cad_field_n = 0

@@ -9,7 +9,6 @@ from osgeo import osr
 
 import os
 import shutil
-import sys
 
 import difflib
 import re
@@ -21,7 +20,6 @@ import json
 from io import BytesIO
 from math import ceil
 
-from contextlib import redirect_stdout
 
 class Params:
     """Входные параметры инструмента"""

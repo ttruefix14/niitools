@@ -15,7 +15,7 @@ class Params:
         self.layer_2 = params[3].valueAsText
         self.field_2 = params[4].valueAsText if params[4].valueAsText != params[1].valueAsText else params[4].valueAsText + '_1'
         self.min_intersection = params[5].value
-        self.exceptions = set(params[6].valueAsText) if params[6].valueAsText else None
+        self.exceptions = set(params[6].values) | {'Вне границ'} if params[6].values else {'Вне границ'}
         self.output_fc = params[7].valueAsText
         if arcpy.Describe(os.path.split(self.output_fc)[0]).dataType == 'Folder':
             self.output_fc += '.shp'
@@ -59,9 +59,11 @@ def execute():
             geoms.append([geom, 'Вне границ'])
         df = pd.DataFrame(geoms, columns=['SHAPE', params.field_1])
         arcpy.AddMessage(df)
-        memFc = r'memory/temp_merge'
-        arcpy.management.CopyFeatures(df, r'memory/temp')
-        arcpy.management.Merge((params.layer_1, r'memory/temp'), memFc, add_source='ADD_SOURCE_INFO')
+        memFc = r'memory/temp'
+        arcpy.management.CopyFeatures(params.layer_1, memFc)
+        with arcpy.da.InsertCursor(memFc, ['SHAPE@', params.field_1]) as cursor:
+            for i, row in df.iterrows():
+                cursor.insertRow(row.to_list())
 
     arcpy.analysis.PairwiseIntersect((memFc or params.layer_1, params.layer_2), params.output_fc, "all", "", "input")
     

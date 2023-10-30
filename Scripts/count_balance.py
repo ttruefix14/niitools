@@ -253,7 +253,7 @@ def execute():
     # podzone_group = []
     q = 0
 
-    for group in range (len(zones['Zone_group'])-1):
+    for group in range (len(zones['Zone_group'])):
         if q != 0:
             if zones['Zone_group'][group] != zones['Zone_group'][group-1]:
                 zone_group += [zones['Zone_group'][group]]
@@ -279,7 +279,7 @@ def execute():
     # NP = pd.read_excel(io = os.path.join(defaultFolder, "NP.xlsx"))
     q = 0
     okruga = []
-    for okrug in range (len(NP['OKRUG'])-1):
+    for okrug in range (len(NP['OKRUG'])):
         if q != 0:
             if NP['OKRUG'][okrug] != NP['OKRUG'][okrug-1]:
                 okruga += [NP['OKRUG'][okrug]]
@@ -359,7 +359,10 @@ def execute():
 
     lu_columns = []
     for cat in xl['CATEGORY'].to_list():
-        if cat in LU_int['CATEGORY_y'].to_list():
+        if cat == 'Земли населенных пунктов':
+            if float(LU_NP_vkl['Area'].sum()) > 0.1:
+                lu_columns.append(cat)
+        elif cat in LU_int['CATEGORY_y'].to_list():
             lu_columns.append(cat)
 
     if 'Земли населенных пунктов' in LU_int['CATEGORY_x'].tolist():
@@ -429,7 +432,8 @@ def execute():
 
     current_dict['Земли населенных пунктов'] = float(LU_NP_vkl['Area'].sum())
     catAreaNP_plan = float(LU_NP_vkl['Area'].sum()) + float(LU_NP_minus['Area'].sum())
-    if catAreaNP > 0.1:
+    if catAreaNP > 0.1 or catAreaNP_plan > 0.1:
+        arcpy.AddMessage(str(current_dict))
         block = pd.DataFrame([['1.'+ str(o), 'Земли населенных пунктов за границами населенных пунктов, сведения о которых внесены в ЕГРН', catAreaNP, -catAreaNP_plan]+list(current_dict.values())+[None]], columns=['Ext_Zone_Code', 'Zone', 'SI', 'PLAN']+lu_columns+['ИТОГО'])
         Categories = Categories.append(block, ignore_index=False, verify_integrity=False, sort=False)
         
@@ -609,6 +613,8 @@ def execute():
     itogo_E = '='
     itogo_F = '='
     np_ind_Dict = {i: [0, 0] for i in NP['NAME'].to_list()}
+    # arcpy.AddMessage(str(np_ind_Dict))
+    # Balance.to_excel(outputXLS.valueAsText)
     for i in range(len(Balance)):
         n = i+2
 

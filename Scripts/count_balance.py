@@ -430,11 +430,12 @@ def execute():
         if len(current) > 0:
             current_dict[cat] = current['Area'].sum()
 
-    current_dict['Земли населенных пунктов'] = float(LU_NP_vkl['Area'].sum())
+    if float(LU_NP_vkl['Area'].sum()) > 0:
+        current_dict['Земли населенных пунктов'] = float(LU_NP_vkl['Area'].sum())
     catAreaNP_plan = float(LU_NP_vkl['Area'].sum()) + float(LU_NP_minus['Area'].sum())
     if catAreaNP > 0.1 or catAreaNP_plan > 0.1:
         arcpy.AddMessage(str(current_dict))
-        block = pd.DataFrame([['1.'+ str(o), 'Земли населенных пунктов за границами населенных пунктов, сведения о которых внесены в ЕГРН', catAreaNP, -catAreaNP_plan]+list(current_dict.values())+[None]], columns=['Ext_Zone_Code', 'Zone', 'SI', 'PLAN']+lu_columns+['ИТОГО'])
+        block = pd.DataFrame([['1.'+ str(o), 'Земли населенных пунктов за границами населенных пунктов, сведения о которых внесены в ЕГРН', catAreaNP, -catAreaNP_plan]+list(current_dict.values()) + [None]], columns=['Ext_Zone_Code', 'Zone', 'SI', 'PLAN']+lu_columns+['ИТОГО'])
         Categories = Categories.append(block, ignore_index=False, verify_integrity=False, sort=False)
         
     Categories['SI+PLAN'] = Categories['SI'] + Categories['PLAN']

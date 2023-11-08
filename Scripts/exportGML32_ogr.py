@@ -146,6 +146,8 @@ def tab_to_gdf(in_table, input_fields=None, where_clause=None, spatial_reference
 
 
 def create_custom_transformation(inputSRS, outputSRS, customGeoTransfm, geoTransfm):
+    if not outputSRS:
+        return None
     if inputSRS == outputSRS or inputSRS.exportToString() == outputSRS.exportToString():
         return None
     dirname = os.path.join(os.getenv('APPDATA'), 'Esri', 'ArcGISPro', 'ArcToolbox', 'CustomTransformations')
@@ -157,7 +159,7 @@ def create_custom_transformation(inputSRS, outputSRS, customGeoTransfm, geoTrans
     
     geotransfName = 'MSK_to_WGS{}'
     n = 1
-    while os.path.isfile(os.path.join(dirname, geotransfName.format(n))):
+    while os.path.isfile(os.path.join(dirname, geotransfName.format(n) + '.gtf')):
         n += 1
     arcpy.AddMessage(geotransfName.format(n))
     arcpy.management.CreateCustomGeoTransformation(geotransfName.format(n), inputSRS, outputSRS, customGeoTransfm)
@@ -248,12 +250,17 @@ def fc_to_gml(outSource, layerName, gdf, epsg, mask, oktmo, p10):
         return
     gdf = gdf.loc[~gdf.geometry.isnull()]
     gdf.geometry = gdf.apply(lambda row: shapely.make_valid(row.geometry), axis=1)
-
+    if len(gdf) == 0:
+        return
+    
     if mask:
         gdf.geometry = gdf.intersection(mask)
     gdf = gdf.loc[~gdf.geometry.is_empty]
-
+    if len(gdf) == 0:
+        return
+    
     gtype = layerName.split('_')[1]
+
     gdf.geometry = gdf.apply(lambda row: removeLowerDimension(row.geometry, gtype), axis=1)
     gdf = gdf.loc[~gdf.geometry.isnull()]
 
@@ -351,8 +358,10 @@ def execute():
 
     test_layer = layers[0]
     inputSRS = arcpy.Describe(test_layer).spatialReference
-    outputSRS = params.outputSRS if params.outputSRS else inputSRS # inputSRS # 
-    equalSRS = not outputSRS
+    outputSRS = params.outputSRS # if params.outputSRS else inputSRS # inputSRS # 
+    # equalSRS = (inputSRS == outputSRS or inputSRS.exportToString() == outputSRS.exportToString())
+    # if equalSRS:
+    #     outputSRS == inputSRS
 
     border_loc = p10['AdmBorder']['CLASSID'][2] + p10['AdmeNP']['CLASSID'][2] + p10['AdmeMO']['CLASSID'][2]
     omz_loc = params.ignore_cid
@@ -385,8 +394,8 @@ def execute():
         lyrDesc = arcpy.Describe(lyr)
 
         inputSRS = lyrDesc.spatialReference
-        if equalSRS:
-            outputSRS = inputSRS
+        # if equalSRS:
+        #     outputSRS = inputSRS
         geotransfName = create_custom_transformation(inputSRS, outputSRS, params.customGeoTransfm, params.geoTransfm)
         
         table, epsg = tab_to_gdf(lyr, spatial_reference=outputSRS, datum_transformation=geotransfName)

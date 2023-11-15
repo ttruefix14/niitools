@@ -203,7 +203,7 @@ def execute():
     LU_NP_vkl['Shape_Area'] = LU_NP_vkl.apply(lambda row: row["SHAPE@"].area, axis=1, result_type='reduce')
     LU_NP_minus = table_to_data_frame(os.path.join(output_db, "LU_NP_minus"), ['CLASSID', 'CLASSID_1', 'STATUS'])
     LU_NP_minus['Shape_Area'] = LU_NP_minus.apply(lambda row: row["SHAPE@"].area, axis=1, result_type='reduce')
-    LU_int_minus = table_to_data_frame(os.path.join(output_db, 'LU_int_minus'), ['CLASSID_1'])
+    LU_int_minus = table_to_data_frame(os.path.join(output_db, 'LU_int_minus'), ['CLASSID', 'CLASSID_1'])
     LU_int_minus['Shape_Area'] = LU_int_minus.apply(lambda row: row["SHAPE@"].area, axis=1, result_type='reduce')
     FZ_NP['SI+PLAN'], SI_NP['SI'], FZ_MO['SI+PLAN'], SI_MO['SI'], LU_int['Area'], LU_S['Area']  = FZ_NP['Shape_Area']/10000, SI_NP['Shape_Area']/10000, FZ_MO['Shape_Area']/10000, SI_MO['Shape_Area']/10000, LU_int['Shape_Area']/10000, LU_S['Shape_Area']/10000
     AdmeMO['Area'] = AdmeMO['Shape_Area']/10000
@@ -325,6 +325,7 @@ def execute():
     LU_int = LU_int.merge(xl, left_on='CLASSID', right_on = 'CLASSID', how = 'left')
     LU_int = LU_int.merge(xl, left_on='CLASSID_1', right_on = 'CLASSID', how = 'left')
 
+    LU_int_minus = LU_int_minus.rename(columns={'CLASSID': 'CLASSID_old'})
     LU_int_minus = LU_int_minus.merge(xl, left_on='CLASSID_1', right_on = 'CLASSID', how = 'left')
     ##земли нп за границами нп
     LU_NP = LU_NP.loc[LU_NP['STATUS'] == 1]
@@ -360,7 +361,7 @@ def execute():
     lu_columns = []
     for cat in xl['CATEGORY'].to_list():
         if cat == 'Земли населенных пунктов':
-            if float(LU_NP_vkl['Area'].sum()) > 0.1:
+            if float(LU_NP_vkl['Area'].sum()) > 0.05:
                 lu_columns.append(cat)
         elif cat in LU_int['CATEGORY_y'].to_list():
             lu_columns.append(cat)
@@ -430,7 +431,7 @@ def execute():
         if len(current) > 0:
             current_dict[cat] = current['Area'].sum()
 
-    if float(LU_NP_vkl['Area'].sum()) > 0:
+    if float(LU_NP_vkl['Area'].sum()) > 0.05:
         current_dict['Земли населенных пунктов'] = float(LU_NP_vkl['Area'].sum())
     catAreaNP_plan = float(LU_NP_vkl['Area'].sum()) + float(LU_NP_minus['Area'].sum())
     if catAreaNP > 0.1 or catAreaNP_plan > 0.1:

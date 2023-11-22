@@ -67,7 +67,7 @@ def execute():
 
     def sort_NP(ds):
         sort_list = set(ds)
-        sort_list.remove('МО')
+        sort_list = sort_list - {'МО'}
         sort_list = sorted(sort_list)
         sort_list.append('МО')
         return ds.apply(lambda value: sort_list.index(value))
@@ -75,8 +75,11 @@ def execute():
     arcpy.AddMessage(str(df['NP']))
     # result = df[['CadNumber', 'NP', 'SETTL_TYPE', 'NAME_UCHLE', 'geometry']].groupby(['CadNumber', 'NP', 'SETTL_TYPE', 'NAME_UCHLE'], dropna=False).agg(merge).reset_index()
     result = df[['CadNumber', 'NP', 'SETTL_TYPE', 'geometry']].groupby(['CadNumber', 'NP', 'SETTL_TYPE'], dropna=False).agg(merge).reset_index()
-    result = result.merge(settl_type, how = 'left', left_on='SETTL_TYPE', right_on='Code')
-    result['NP_NAME'] = result.apply(lambda row: 'МО' if row['NP'] == 'МО' else row['Value'] + ' ' + row['NP'], axis=1)
+    if False:
+        result = result.merge(settl_type, how = 'left', left_on='SETTL_TYPE', right_on='Code')
+        result['NP_NAME'] = result.apply(lambda row: 'МО' if row['NP'] == 'МО' else row['Value'] + ' ' + row['NP'], axis=1)
+    else:
+        result['NP_NAME'] = result['NP']
     # result = result.sort_values(['NP', 'NAME_UCHLE', 'CadNumber'])
     result = result.sort_values(['NP', 'CadNumber'])
     result = result.sort_values(['NP'], key=sort_NP)

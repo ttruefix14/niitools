@@ -10,8 +10,8 @@ class Params:
 
 def execute():
     params = Params(arcpy.GetParameterInfo())
-    arcpy.env.workspace = params[0]
-    inputSR = params[1]
+    arcpy.env.workspace = params.sde
+    inputSR = params.inputSR
 
     arcpy.env.addOutputsToMap = False
 
@@ -22,13 +22,13 @@ def execute():
 
 
     for ds in arcpy.ListDatasets():
-        if params[2]:
+        if params.regVer:
             arcpy.management.RegisterAsVersioned(ds)
 
-        if params[3]:
+        if params.enableEdit:
             arcpy.management.EnableEditorTracking(ds)
 
-    if params[4]:
+    if params.addGuid:
         arcpy.management.AddGlobalIDs(arcpy.ListDatasets())
 
 if __name__ == '__main__':

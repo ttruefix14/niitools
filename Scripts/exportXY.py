@@ -6,6 +6,7 @@ class Params:
     def __init__(self, params):
         self.input_fs = params[0].value
         self.output_xls = params[1].valueAsText
+        self.join_np_types = params[2].value
 
 def getRingCoords(ring):
     xx, yy = ring.coords.xy
@@ -75,7 +76,7 @@ def execute():
     arcpy.AddMessage(str(df['NP']))
     # result = df[['CadNumber', 'NP', 'SETTL_TYPE', 'NAME_UCHLE', 'geometry']].groupby(['CadNumber', 'NP', 'SETTL_TYPE', 'NAME_UCHLE'], dropna=False).agg(merge).reset_index()
     result = df[['CadNumber', 'NP', 'SETTL_TYPE', 'geometry']].groupby(['CadNumber', 'NP', 'SETTL_TYPE'], dropna=False).agg(merge).reset_index()
-    if False:
+    if params.join_np_types:
         result = result.merge(settl_type, how = 'left', left_on='SETTL_TYPE', right_on='Code')
         result['NP_NAME'] = result.apply(lambda row: 'МО' if row['NP'] == 'МО' else row['Value'] + ' ' + row['NP'], axis=1)
     else:

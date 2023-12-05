@@ -17,7 +17,7 @@ def exportToJPEG(lyts, dpi, quality, outputFolder):
 def exportToPDF(lyts, dpi, quality, output_as_image, outputFolder):
     for lyt in lyts:
         try:
-            lyt.exportToPDF(os.path.join(outputFolder, lyt.name), dpi, image_compression='LZW', layer_attributes='LAYERS_ONLY', georef_info=False, jpeg_compression_quality=quality, output_as_image=output_as_image)
+            lyt.exportToPDF(os.path.join(outputFolder, lyt.name), dpi, image_compression='LZW', layers_attributes='LAYERS_ONLY', georef_info=False, jpeg_compression_quality=quality, output_as_image=output_as_image)
             arcpy.AddMessage(f'{lyt.name}: Успешно экспортирован')
         except Exception as e:
             arcpy.AddMessage(f'{lyt.name}: {e}')

@@ -1,7 +1,7 @@
 import os
 import sys
 from PIL import Image
-Image.MAX_IMAGE_PIXELS = 933120000
+Image.MAX_IMAGE_PIXELS = 1_100_000_000
 
 
 def isImage(f: str) -> bool:

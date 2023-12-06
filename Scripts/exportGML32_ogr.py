@@ -54,6 +54,8 @@ class Params:
 
         self.splitSize = params[13].value
 
+        self.gml_version = params[14].valueAsText
+
        
 
 class P10:
@@ -236,13 +238,13 @@ def removeLowerDimension(geom, gtype):
 def escape_xml_illegal_chars(unicodeString, replaceWith=r''):
 	return re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1F\uD800-\uDFFF\uFFFE\uFFFF]', replaceWith, unicodeString)
 
-def create_gml(dirname, filename, xsd):
+def create_gml(dirname, filename, xsd, gml_version):
     path = os.path.join(dirname, filename)
     if os.path.isfile(path):
         os.remove(path)
     
     driver = ogr.GetDriverByName("GML")
-    outDataSource = driver.CreateDataSource(path, options=['PREFIX=fgistp', 'FORMAT=GML3.2', r'TARGET_NAMESPACE=http://fgistp', fr'XSISCHEMAURI=http://fgistp {xsd}', 'WRITE_FEATURE_BOUNDED_BY=NO'])
+    outDataSource = driver.CreateDataSource(path, options=['PREFIX=fgistp', f'FORMAT={gml_version}', r'TARGET_NAMESPACE=http://fgistp', fr'XSISCHEMAURI=http://fgistp {xsd}', 'WRITE_FEATURE_BOUNDED_BY=NO'])
     return outDataSource
 
 def fc_to_gml(outSource, layerName, gdf, epsg, mask, oktmo, p10):
@@ -376,10 +378,10 @@ def execute():
     else:
         clipping_mask = None
 
-    border_gml = create_gml(params.output_dirname, 'Карта границ населенных пунктов (в том числе границ образуемых населенных пунктов).gml', params.xsd[0])
-    omz_gml = create_gml(params.output_dirname, 'Карта планируемого размещения объектов.gml', params.xsd[0])
-    fz_gml= create_gml(params.output_dirname, 'Карта функциональных зон поселения или городского округа.gml', params.xsd[0])
-    mo_gml = create_gml(params.output_dirname, 'Материалы по обоснованию в виде карт.gml', params.xsd[0])
+    border_gml = create_gml(params.output_dirname, 'Карта границ населенных пунктов (в том числе границ образуемых населенных пунктов).gml', params.xsd[0], params.gml_version)
+    omz_gml = create_gml(params.output_dirname, 'Карта планируемого размещения объектов.gml', params.xsd[0], params.gml_version)
+    fz_gml= create_gml(params.output_dirname, 'Карта функциональных зон поселения или городского округа.gml', params.xsd[0], params.gml_version)
+    mo_gml = create_gml(params.output_dirname, 'Материалы по обоснованию в виде карт.gml', params.xsd[0], params.gml_version)
 
 
     for lyr in layers:

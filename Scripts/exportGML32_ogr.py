@@ -275,6 +275,9 @@ def fc_to_gml(outSource, layerName, gdf, epsg, mask, oktmo, p10):
         if gdf[col].dtype == 'datetime64[ns]':
             gdf[col] = gdf.apply(lambda row: row[col].strftime('%Y/%m/%d'), axis=1)
     
+    valid = [layerName, [[gid, shapely.is_valid(geom)] for gid, geom in zip(gdf.GLOBALID, gdf.geometry)]]
+    if not all([i[1] for i in valid[1]]):
+        not_valid_geoms.append(valid)
 
     temp = BytesIO()
     gdf.to_file(temp, driver='GeoJSON')
@@ -490,5 +493,9 @@ def execute():
                 
 
 if __name__ == '__main__':
+    not_valid_geoms = []
     execute()
+
+    with open('not_valid.txt', 'w') as f:
+        f.write(str(not_valid_geoms))
 

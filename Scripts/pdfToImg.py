@@ -34,6 +34,6 @@ if __name__ == '__main__':
     if len(sys.argv) == 1:
         raise TypeError("Необходимо указать путь к директории")
     elif len(sys.argv) > 2:
-        if isinstance(sys.argv[2], int):
-            dpi = sys.argv[2]
+        if sys.argv[2].isdigit():
+            dpi = int(sys.argv[2])
     main(sys.argv[1], dpi)

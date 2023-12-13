@@ -2,8 +2,20 @@ import fitz
 import os
 import sys
 
+import importlib
+arcpy_loader = importlib.find_loader('arcpy')
+arcpyLoaded = arcpy_loader is not None
+if arcpyLoaded:
+    import arcpy
+
+def printMessage(text, *args):
+    if arcpyLoaded:
+        arcpy.AddMessage(text)
+    else:
+        print(text, *args)
+
 def isPdf(f: str) -> bool:
-    if f.endswith('.pdf'):
+    if f.lower().endswith('.pdf'):
         return True
 
 def main(dirname, dpi=200):
@@ -22,12 +34,12 @@ def main(dirname, dpi=200):
 
                 output = os.path.splitext(file)[0] + ".jpg"
                 pix.save(output)
-                print(f"{f}: успешно конвертирован!")
+                printMessage(f"{f}: успешно конвертирован!")
             except Exception as e:
                 if hasattr(e, 'message'):
-                    print(f'{f}: {e.message}', file=sys.stderr)
+                    printMessage(f'{f}: {e.message}', file=sys.stderr)
                 else:
-                    print(f'{f}: {str(e)}', file=sys.stderr)
+                    printMessage(f'{f}: {str(e)}', file=sys.stderr)
 
 if __name__ == '__main__':
     dpi = 200

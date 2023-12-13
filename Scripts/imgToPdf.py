@@ -19,9 +19,6 @@ def isImage(f: str) -> bool:
     if f.lower().endswith('.jpg'):
         return True
     
-
-
-
 def main(dirname):
     if not os.path.exists(dirname):
         raise ValueError(f"{dirname}: директория не существует")

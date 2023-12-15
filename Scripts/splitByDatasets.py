@@ -25,7 +25,7 @@ def main(dirname):
     with pd.ExcelFile(p10) as xls:
         layers = pd.read_excel(xls, sheet_name="Слои")
 
-    layers_dict = {fc: ds for fc, ds in zip(layers.Layer, layers.Dataset)}
+    layers_dict = {fc: ds for fc, ds in zip(layers['Layer'], layers['Dataset'])}
 
 
     for filename in os.listdir(dirname):

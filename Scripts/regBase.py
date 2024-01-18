@@ -11,22 +11,21 @@ class Params:
 def execute():
     params = Params(arcpy.GetParameterInfo())
     arcpy.env.workspace = params.sde
-    inputSR = params.inputSR
 
     arcpy.env.addOutputsToMap = False
 
-    if inputSR:
-        for ds in arcpy.ListDatasets():
-            if arcpy.Describe(ds).spatialReference.WKT != inputSR.WKT: 
-                arcpy.management.DefineProjection(ds, inputSR)
-
-
     for ds in arcpy.ListDatasets():
+        if params.inputSR:
+            if arcpy.Describe(ds).spatialReference.exportToString() != params.inputSR.exportToString: 
+                arcpy.management.DefineProjection(ds, params.inputSR)
+
         if params.regVer:
             arcpy.management.RegisterAsVersioned(ds)
 
         if params.enableEdit:
             arcpy.management.EnableEditorTracking(ds)
+
+        arcpy.AddMessage(f"Датасет {ds} успешно зарегистрирован!")
 
     if params.addGuid:
         arcpy.management.AddGlobalIDs(arcpy.ListDatasets())

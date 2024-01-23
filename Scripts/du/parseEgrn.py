@@ -62,7 +62,7 @@ def xml_parse(xml, dirname):
             objs = None
         oks = [next(i.iter('cad_number')).text for i in objs] if objs else []
 #         print(oks)
-        return ['reg', cad_number, reg[0], reg[1], dirname, ', '.join(prev_cads), rent[0], rent[1], cat, ', '.join(oks)]
+        return ['reg', cad_number, reg[0], reg[1], dirname, ', '.join(prev_cads), rent[0], rent[1], cat, ', '.join(oks), root.tag]
     # Для выписки о переходе прав
     elif xml_type == 2:
         # Кад номер
@@ -107,7 +107,7 @@ def main(dirname, xlsx):
 
 
     writer = pd.ExcelWriter(xlsx)
-    df = pd.DataFrame(result['reg'], columns=['Кадастровый номер', 'Собственность', 'Дата_собственности', 'Сельское_поселение', 'Предыдущие номера', 'Обременение', 'Дата_обременения', 'Категория земель', 'Объекты капитального строительства'])
+    df = pd.DataFrame(result['reg'], columns=['Кадастровый номер', 'Собственность', 'Дата_собственности', 'Сельское_поселение', 'Предыдущие номера', 'Обременение', 'Дата_обременения', 'Категория земель', 'Объекты капитального строительства', 'Тип выписки'])
     df.to_excel(writer, engine='openpyxl', sheet_name='Собственность', index=False)
     df = pd.DataFrame(result['ip'], columns=['Кадастровый номер', 'Собственность', 'Дата_собственности', 'Сельское_поселение'])
     df.to_excel(writer, engine='openpyxl', sheet_name='История права', index=False)

@@ -67,8 +67,42 @@ def execute():
             for i, row in df.iterrows():
                 cursor.insertRow(row.to_list())
 
+    # else:
+    #     erase = [row[0] for row in arcpy.da.SearchCursor(params.layer_1, 'SHAPE@')]
+    #     def eraseBorders(row):
+    #         geom = row[0]
+    #         for other in erase:
+    #             geom = geom.difference(other)
+    #         return [geom] + list(row[1:])
+        
+    #     with arcpy.da.SearchCursor(params.layer_2, ["SHAPE@"] + params.fields) as cursor:
+    #         rows = []
+    #         for row in cursor:
+    #             current_row = eraseBorders(row)
+
+    #             if row[0].area == 0:
+    #                 continue
+    #             rows.append(row)
+    #         df_l2 = pd.DataFrame(rows, columns=cursor.fields)
+
+
+
     arcpy.analysis.PairwiseIntersect((memFc or params.layer_1, params.layer_2), params.output_fc, "all", "", "input")
+    if not params.border:
+        arcpy.analysis.Erase(params.layer_2, params.layer_1, r"memory/erased")
+        arcpy.management.Append([r"memory/erased"], params.output_fc, "NO_TEST")
+        beyond_border = "Вне границ"
+        arcpy.management.CalculateField(params.output_fc, params.field_1, f'"Вне границ" if (!{params.field_1}! == " " or !{params.field_1}! is None) else !{params.field_1}!', "PYTHON3")
+
+    # arcpy.RemoveSpatialIndex_management(params.output_fc)
     
+    # if not params.border:
+    #     with arcpy.da.InsertCursor(params.output_fc, ['SHAPE@'] + params.fields + [params.field_1]) as cursor:
+    #         # arcpy.AddMessage(cursor.fields)
+    #         for i, row in df_l2.iterrows():
+    #             # arcpy.AddMessage(row)
+    #             cursor.insertRow(row.to_list() + ['Вне границ'])
+
 
     df = table_to_data_frame(params.output_fc)
     df['AREA'] = df.apply(lambda row: row['SHAPE@'].area, axis=1, result_type='reduce')

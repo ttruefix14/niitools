@@ -61,7 +61,7 @@ def count_transfers(df, df_du, right_on, np_dict, lu_dict, fz_dict, du_type=True
     df['iskl_v_np'] = False
     if 'name' in df.columns:
         df['iskl_v_np'] = df.apply(lambda row: True if row['SETTL_TYPE'] > 100 else False, axis=1, result_type='reduce')
-        df['SETTL_TYPE'] = df.apply(lambda row: row['SETTL_TYPE'] if row['SETTL_TYPE'] < 101 else row['SETTL_TYPE'], axis=1, result_type='reduce')
+        df['SETTL_TYPE'] = df.apply(lambda row: row['SETTL_TYPE'] if row['SETTL_TYPE'] < 101 else row['SETTL_TYPE'] - 100, axis=1, result_type='reduce')
         df['np'] = df.apply(lambda row: np_dict[row['SETTL_TYPE']] + ' ' + row['name'], axis=1, result_type='reduce')
     else:
         df['name'] = 'МО'

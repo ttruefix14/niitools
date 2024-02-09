@@ -48,6 +48,7 @@ def count_transfers(df, df_du, right_on, np_dict, lu_dict, fz_dict, du_type=True
     fields = ['name', 'np', 'cadnumber', 'category', 'category_plan']
     df['cadnumber'] = df.apply(lambda row: row['cadnumber'] if row['cadnumber'] else 'Территория, собственность на которую не разграничена', axis=1, result_type='reduce')
     df['area'] = df.apply(lambda row: row["SHAPE@"].area / 10000, axis=1, result_type='reduce')
+    
     df['OLD_FID'] = df.index
 
     
@@ -80,7 +81,8 @@ def count_transfers(df, df_du, right_on, np_dict, lu_dict, fz_dict, du_type=True
         
     df['zones']  = df.apply(lambda row: fz_dict[row['Ext_Zone_Code']], axis=1, result_type='reduce')
 
-        
+    df = df.loc[df['area'] > 0.001]   
+     
     def agg_strings(strings):
         return ', '.join(set(strings))
     df_agr = df.groupby(fields).agg({'zones': agg_strings, 'area': 'sum', 'area_du': 'sum'}).reset_index()

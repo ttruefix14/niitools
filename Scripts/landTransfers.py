@@ -14,13 +14,14 @@ class Params:
         self.input_xls = params[0].valueAsText
         
         self.NP = params[1].valueAsText
-        self.ZU = params[2].valueAsText
-        self.FZ = params[3].valueAsText
-        self.LU = params[4].valueAsText
-        self.DU = params[5].valueAsText
-        self.du_type = params[6].valueAsText
+        self.np_status_field = params[2].valueAsText
+        self.ZU = params[3].valueAsText
+        self.FZ = params[4].valueAsText
+        self.LU = params[5].valueAsText
+        self.DU = params[6].valueAsText
+        self.du_type = params[7].valueAsText
         
-        self.output_xls = params[7].valueAsText
+        self.output_xls = params[8].valueAsText
                 
 def table_to_data_frame(in_table, input_fields=None, where_clause=None):
     """Function will convert an arcgis table into a pandas dataframe with an object ID index, and the selected
@@ -127,7 +128,7 @@ def main():
     # m = aprx.activeMap
 
     # Выгружаем слои в локальную базу
-    arcpy.conversion.FeatureClassToFeatureClass(params.NP, output_db, "NP_plan", "STATUS_ADM = 2")
+    arcpy.conversion.FeatureClassToFeatureClass(params.NP, output_db, "NP_plan", f"{params.np_status_field} <> 'изменяемая'")
     arcpy.conversion.FeatureClassToFeatureClass(params.NP, output_db, "NP_ex", "STATUS_ADM = 1")
     arcpy.conversion.FeatureClassToFeatureClass(params.ZU, output_db, "ZU")
     arcpy.conversion.FeatureClassToFeatureClass(params.FZ, output_db, "FZ")

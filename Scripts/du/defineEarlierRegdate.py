@@ -32,6 +32,7 @@ def prev_cicle(all_prev, all_reg, result):
     last = all_prev[-1]
     if len(all_prev) < 2:
         result.append(last)
+        # arcpy.AddMessage("circle "+str(result))
         return result[::-1]
     z = 0
     for i in all_prev[::-1][1:]:
@@ -92,6 +93,7 @@ def prev_zu(prev_list, all_reg, ip_reg, all_prev, dates, ip_dates, no_xml, no_xm
                     return cad, prev, prev_date, ip_date, all_prev, no_xml, no_xml_ip
         else:
             continue
+    # arcpy.AddMessage(str(prev_list) + " " + str(all_prev))
     if len(all_prev) > 0:
         dates_num = list(enumerate(dates, 0))
         ip_dates_num = list(enumerate(ip_dates, 0))
@@ -140,6 +142,7 @@ def main(input_xlsx, output_xlsx):
     du_cads_list = filter(lambda x: re.search(r':', x), set(du_cads['Кадастровый номер'].to_list()))
     xml_exists = True
     for cad in du_cads_list:
+        # arcpy.AddMessage("УЧАСТОК " + cad)
         xml_exists = True
         reg = None
         reg_date = None

@@ -39,7 +39,7 @@ def xml_parse(xml, dirname):
         regs = []
         reg = (None, None)
         if rights:
-            regs = [(next(i.iter('value')).text, dtparse(next(i.iter('registration_date')).text).replace(tzinfo=None)) for i in rights]
+            regs = [(next(i.iter('value')).text + ' № ' + next(i.iter('right_number')).text, dtparse(next(i.iter('registration_date')).text).replace(tzinfo=None)) for i in rights]
             reg = min(regs, key = lambda x: x[1])
 #         print(reg)
         # Аренда
@@ -50,7 +50,7 @@ def xml_parse(xml, dirname):
         rents = []
         rent = (None, None)
         if restricts:
-            rents = [(next(i.iter('value')).text, dtparse(next(i.iter('registration_date')).text).replace(tzinfo=None)) for i in restricts]
+            rents = [(next(i.iter('value')).text + ' № ' + next(i.iter('restriction_encumbrance_number')).text, dtparse(next(i.iter('registration_date')).text).replace(tzinfo=None)) for i in restricts]
             rents = list(filter(lambda x: re.search(r'ренда', x[0]), rents))
             if len(rents) > 0:
                 rent = min(rents, key = lambda x: x[1])
@@ -65,8 +65,12 @@ def xml_parse(xml, dirname):
         return ['reg', cad_number, reg[0], reg[1], dirname, ', '.join(prev_cads), rent[0], rent[1], cat, ', '.join(oks), root.tag]
     # Для выписки о переходе прав
     elif xml_type == 2:
+        try:
+            record = next(root.iter('build_record'))
+        except:
+            record = next(root.iter('land_record'))
         # Кад номер
-        cad_number = next(next(root.iter('land_record')).iter('cad_number')).text
+        cad_number = next(record.iter('cad_number')).text
 #         print(cad_number)        
         # Права
         try:
@@ -101,7 +105,7 @@ def main(dirname, xlsx):
     for dirpath, _, filenames in os.walk(dirname):
         # перебрать файлы
             for filename in filenames:
-                if 'xml' in filename.lower():
+                if filename.lower().endswith('.xml'):
                     res = xml_parse(os.path.join(dirpath, filename), os.path.join(dirpath))
                     result[res[0]].append(res[1:])
 

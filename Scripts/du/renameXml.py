@@ -24,8 +24,15 @@ def xml_rename(xml, dirname):
     # Для выписки о переходе прав
     elif xml_type == 2:
         # Кад номер
-        cad_number = next(next(root.iter('land_record')).iter('cad_number')).text
         cad_type = 'ип_'
+        try:
+            record = next(root.iter('build_record'))
+            cad_type = 'окс_' + cad_type
+        except:
+            record = next(root.iter('land_record'))
+
+        cad_number = next(record.iter('cad_number')).text
+        
 
     # Для выписки без информации
     elif xml_type == 3:
@@ -48,7 +55,7 @@ def main(dirname):
     for dirpath, _, filenames in os.walk(dirname):
         # перебрать файлы
             for filename in filenames:
-                #print("Файл:", os.path.join(dirpath, dirname, filename))
+                arcpy.AddMessage("Файл:" + os.path.join(dirpath, dirname, filename))
                 xml_rename(os.path.join(dirpath, filename), os.path.join(dirpath))
 
 if __name__ == '__main__':

@@ -61,7 +61,7 @@ def tab_to_gdf(in_table, input_fields=None, where_clause=None, spatial_reference
 
 def execute():
     params = Params(arcpy.GetParameterInfo())
-    df, _ = tab_to_gdf(params.input_fs)
+    df, _ = tab_to_gdf(params.input_fs)#, spatial_reference=arcpy.SpatialReference(4326), datum_transformation="MSK_to_WGS2")
 
     settl_type = pd.read_excel(r"..\Defaults\p10.xlsx", sheet_name='Справочники')
     settl_type = settl_type.loc[settl_type['Domain'] == 'SETTL_TYPE']

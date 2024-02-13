@@ -377,6 +377,12 @@ def execute():
     else:
         current_dict = dict.fromkeys(lu_columns, 0)
 
+    arcpy.AddMessage("lu columns: " + str(lu_columns))
+    arcpy.AddMessage("current_dict: " + str(current_dict))
+
+    if "Земли населенных пунктов" in lu_columns and "Земли населенных пунктов" not in current_dict:
+        raise Exception("Границы НП не расширяются, однако присутствует планируемая категория НП")
+
     catNP = pd.DataFrame([['1.1', 'Земли населенных пунктов', AdmeNP_S['Area'].sum(), AdmeNP_P['Area'].sum()]+list(current_dict.values())+[None]], columns=['Ext_Zone_Code', 'Zone', 'SI', 'SI+PLAN']+lu_columns+['ИТОГО'])
     Balance = Balance.append(catNP, ignore_index=False, verify_integrity=False, sort=False)
 

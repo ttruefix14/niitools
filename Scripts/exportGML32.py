@@ -267,7 +267,12 @@ def geom_to_gml(geom, clipping_mask, no_clip):
             return
     if shapely_obj.geom_type == 'MultiPolygon' and shapely_obj.area == 0:
         null_geoms.append(geom)
+
+    if shapely_obj.is_empty:
+        return
+    
     wkt = shapely_obj.wkt
+    
 
     ogr_shp = ogr.CreateGeometryFromWkt(wkt)
     return ogr_shp.ExportToGML(options=["FORMAT=GML32", 'NAMESPACE_DECL=YES', 'GMLID=change']) # 'GML3_LINESTRING_ELEMENT=curve'

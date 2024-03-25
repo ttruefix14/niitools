@@ -19,20 +19,8 @@ SET PATH=%PATH%;"C:\Program Files\ArcGIS\Pro\bin\Python\Scripts"
 REM start by activating the arcgis pro conda env
 call "C:\Program Files\ArcGIS\Pro\bin\Python\Scripts\activate.bat" & (
 
-	conda create --clone %ARCGIS_DEFAULT% --name %ENV_NAME% --pinned
-	ECHO ^-^-^> %ENV_NAME% environment created
+	activate arcgispro-py3
+	conda list
 	)
-
-call "C:\Program Files\ArcGIS\Pro\bin\Python\Scripts\activate.bat" %ENV_NAME% & (
-	conda install shapely=2.0.1 --yes
-	pip install geopandas==0.10.2
-	pip install ezdxf
-	pip install PyMuPdf --ignore-installed
-	ECHO ^-^-^> shapely=2.0.1 geopandas=0.10.2 ezdxf installed
-	)
-
-CALL "%PRO_PATH%\Scripts\proswap.bat" %ENV_NAME%
-ECHO ^-^-^> Pro env set
-
 pause
 exit

@@ -22,6 +22,7 @@ call "C:\Program Files\ArcGIS\Pro\bin\Python\Scripts\activate.bat" & (
 	conda create --clone %ARCGIS_DEFAULT% --name %ENV_NAME% --pinned
 	ECHO ^-^-^> %ENV_NAME% environment created
 
+	activate %ENV_NAME%
 	conda install shapely=2.0.1 --yes
 	pip install geopandas==0.10.2
 	pip install ezdxf

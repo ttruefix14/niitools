@@ -44,7 +44,10 @@ def table_to_data_frame(in_table, input_fields=None, where_clause=None):
     return fc_dataframe
 
 def count_transfers(df, df_du, right_on, np_dict, lu_dict, fz_dict, du_type=True):
-
+    def agg_strings(strings):
+        strings = list(filter(lambda x: type(x) == str, strings))
+        return ', '.join(set(strings))
+    
     fields = ['name', 'np', 'cadnumber', 'category', 'category_plan']
     df['cadnumber'] = df.apply(lambda row: row['cadnumber'] if row['cadnumber'] else 'Территория, собственность на которую не разграничена', axis=1, result_type='reduce')
     df['area'] = df.apply(lambda row: row["SHAPE@"].area / 10000, axis=1, result_type='reduce')
@@ -53,6 +56,8 @@ def count_transfers(df, df_du, right_on, np_dict, lu_dict, fz_dict, du_type=True
 
     
     df_du['area_du'] = df_du.apply(lambda row: row["SHAPE@"].area / 10000, axis=1, result_type='reduce')
+    # df_du['DU_TYPE'].fillna("")
+    df_du = df_du.groupby([right_on]).agg({'area_du': 'sum', 'DU_TYPE': agg_strings}).reset_index()
 
     df = df.merge(df_du, 'left', left_on='OLD_FID', right_on=right_on, validate="one_to_many")
     df['category'] = df.apply(lambda row: row["cat"] if (row["cat"] and not row["cat"].startswith("Земли лесного")) else lu_dict[row['CLASSID']], axis=1, result_type='reduce')
@@ -72,7 +77,7 @@ def count_transfers(df, df_du, right_on, np_dict, lu_dict, fz_dict, du_type=True
     
     if 'CLASSID_12' in df.columns:
         df['category_plan'] = df.apply(lambda row: row['category'] if not row['CLASSID_12'] else lu_dict[row['CLASSID_12']], axis=1, result_type='reduce')
-        df['category_plan'] = df.apply(lambda row: lu_dict[702010500] if abs(row['area'] - row['area_du']) < 0.2 and not row['CLASSID_12'] and not row['iskl_v_np'] and row['DU_TYPE'] in ['искл_лес', 'лес'] else row['category_plan'], axis=1, result_type='reduce')
+        df['category_plan'] = df.apply(lambda row: lu_dict[702010500] if abs(row['area'] - row['area_du']) < 0.2 and not row['CLASSID_12'] and not row['iskl_v_np'] and 'лес' not in row['DU_TYPE'] else row['category_plan'], axis=1, result_type='reduce')
         # костыль для не заполненных DU_TYPE
         if not du_type:
             df['category_plan'] = df.apply(lambda row: lu_dict[702010500] if abs(row['area'] - row['area_du']) < 0.2 and not row['CLASSID_12'] and not row['iskl_v_np'] and row['cadnumber'] == 'Территория, собственность на которую не разграничена' else row['category_plan'], axis=1, result_type='reduce')
@@ -83,8 +88,7 @@ def count_transfers(df, df_du, right_on, np_dict, lu_dict, fz_dict, du_type=True
 
     df = df.loc[df['area'] > 0.001]   
      
-    def agg_strings(strings):
-        return ', '.join(set(strings))
+
     df_agr = df.groupby(fields).agg({'zones': agg_strings, 'area': 'sum', 'area_du': 'sum'}).reset_index()
     df_agr['area'] = df_agr['area'].round(2)
     df_agr['area_du'] = df_agr['area_du'].round(3)

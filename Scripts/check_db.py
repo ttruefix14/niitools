@@ -2,6 +2,8 @@ import arcpy
 import pandas as pd
 import re
 
+arcpy.SetLogMetadata(False)
+
 class Params:
     """Входные параметры инструмента"""
     def __init__(self, params):

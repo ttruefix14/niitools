@@ -78,7 +78,12 @@ class P10:
                      atr_table['Domain'].to_list(),
                      atr_table['Condition'].to_list(),
                      atr_table['Default'].to_list()):
-            self.p10[i[0]][i[1]] = [i[2], i[3], [d for d in dom_table['Code'].loc[dom_table['Domain'] == i[4]].to_list()] if i[4] else [c for c in cid_table['CLASSID'].loc[cid_table['Layer'] == i[0]].to_list()] if i[1] == 'CLASSID' else None, i[5], i[4], i[6]]
+            self.p10[i[0]][i[1]] = [i[2], 
+                                    i[3], 
+                                    [d for d in dom_table['Code'].loc[dom_table['Domain'] == i[4]].to_list()] if i[4] else [c for c in cid_table['CLASSID'].loc[cid_table['Layer'] == i[0]].to_list()] if i[1] == 'CLASSID' else None, 
+                                    i[5], 
+                                    i[4], 
+                                    i[6]]
     
     def __repr__(self):
         return self.p10.__repr__()
@@ -142,7 +147,7 @@ def tab_to_gdf(in_table, input_fields=None, where_clause=None, spatial_reference
         gs = gpd.GeoSeries.from_wkt(df['SHAPE@WKT'])
         del df['SHAPE@WKT']
         srs = spatial_reference or arcpy.Describe(in_table).spatialReference
-        fc_dataframe = gpd.GeoDataFrame(df, geometry=gs, crs=srs.exportToString())
+        fc_dataframe = gpd.GeoDataFrame(df, geometry=gs, crs=srs.factoryCode) #srs.exportToString()
         # fc_dataframe = fc_dataframe.set_index(OIDFieldName, drop=True)
         return fc_dataframe, srs.factoryCode
 
@@ -189,19 +194,19 @@ def makeValidForP10(row_object, name, OKTMO, p10):
 
         if value is None or value != value:
             value = p10.get(name).get(col)[5]
-        
+
         if p10.get(name).get(col)[1] == 'Целое':
-            if isinstance(value, (int, int64)):
+            try:
                 value = int(value)
-            else:
+            except:
                 value = 0
 
         if p10.get(name).get(col)[1] == 'Вещественное':
-            if isinstance(value, (float, float64)):
+            try:
                 value = round(value, 2)
-            else:
+            except:
                 value = 0              
-      
+
         if isinstance(value, (float, float64)):
             value = round(value, 2)
 
@@ -271,6 +276,7 @@ def fc_to_gml(outSource, layerName, gdf, epsg, mask, oktmo, p10):
 
     gdf = gdf.apply(lambda row: makeValidForP10(row, layerName, oktmo, p10), axis=1)
 
+
     for col in gdf.columns:
         if gdf[col].dtype == 'datetime64[ns]':
             gdf[col] = gdf.apply(lambda row: row[col].strftime('%Y/%m/%d'), axis=1)
@@ -281,10 +287,12 @@ def fc_to_gml(outSource, layerName, gdf, epsg, mask, oktmo, p10):
 
     temp = BytesIO()
     gdf.to_file(temp, driver='GeoJSON')
+    # gdf.to_file(fr"C:\Users\ya.shatalov\Desktop\Data\1_Проекты\Апшеронское\Apsheronskoe\ФГИСТП_Апшеронское\{layerName}.geojson", driver='GeoJSON')
     temp.seek(0)
     
     driver = ogr.GetDriverByName("GeoJSON")
     inSource = driver.Open(temp.read())
+    # inSource = driver.Open(fr"C:\Users\ya.shatalov\Desktop\Data\1_Проекты\Апшеронское\Apsheronskoe\ФГИСТП_Апшеронское\{layerName}.geojson")
     temp.close()
     inLayer = inSource.GetLayer()
 
@@ -303,9 +311,13 @@ def fc_to_gml(outSource, layerName, gdf, epsg, mask, oktmo, p10):
             
     
     for feature in inLayer:
-        geom = feature.GetGeometryRef()#.RemoveLowerDimensionSubGeoms()
+        geom = feature.GetGeometryRef()
+        
+        # geom = feature.GetGeometryRef()#.RemoveLowerDimensionSubGeoms()
         geom.AssignSpatialReference(srs)
         feature.SetGeometry(geom)
+
+        print(geom.GetSpatialReference())
         outLayer.CreateFeature(feature)
 
 def splitXml(path, splitSize, fileSize):

@@ -122,6 +122,9 @@ class P10:
         df = df.rename(columns=rename_columns)
         df = df.rename(columns={'GEOMETRY': 'geometry'})
         missing_columns = set(required_columns) - set(df.columns.to_list())
+        # временное решение для прописывания дефолтов
+        for column in missing_columns:
+            df[column] = None
         check_columns = required_columns - missing_columns
         check_columns = sorted(list(check_columns), key=lambda x: required_columns_list.index(x))
         return df[check_columns + ['geometry']]

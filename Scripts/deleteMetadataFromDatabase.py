@@ -5,6 +5,7 @@ from arcpy import metadata as md
 # Update the following variables before running the script.
 myWorkspace = arcpy.GetParameterAsText(0)
 db_type = arcpy.GetParameterAsText(1) #Set this to either "SQL", "Oracle or Postgres" if your db has spatial views. If not you may set it to "".
+arcgis_version = arcpy.GetParameterAsText(2)
 
 def RemoveHistory(myWorkspace):
 ##Removes GP History for feature dataset stored feature classes, and feature classes in the File Geodatabase.
@@ -31,7 +32,10 @@ def isNotSpatialView(myWorkspace, fc):
         egdb_conn = arcpy.ArcSDESQLExecute(myWorkspace)
         #Execute SQL against the view table for the specified RDBMS
         if db_type == "SQL":
-            db, schema, tableName = fcName.split(".")
+            if arcgis_version == "3":
+                schema, tableName = fcName.split(".")
+            else:
+                db, schema, tableName = fcName.split(".")
             sql = r"IF EXISTS(select * FROM sys.views where name = '{0}') SELECT 1 ELSE SELECT 0".format(tableName)
         elif db_type == "Oracle":
             schema, tableName = fcName.split(".")

@@ -23,7 +23,7 @@ def execute():
             arcpy.management.RegisterAsVersioned(ds)
 
         if params.enableEdit:
-            arcpy.management.EnableEditorTracking(ds)
+            arcpy.management.EnableEditorTracking(ds, "created_user", "created_date", "last_edited_user", "last_edited_date", "ADD_FIELDS")
 
         arcpy.AddMessage(f"Датасет {ds} успешно зарегистрирован!")
 

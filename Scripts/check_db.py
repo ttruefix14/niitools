@@ -1,3 +1,4 @@
+import difflib
 import arcpy
 import pandas as pd
 import re
@@ -64,28 +65,63 @@ class Errors:
         filt_dict = {key: ', '.join(value) for key, value in filt_dict.items()}
         return filt_dict.items() if filt_dict.items() else [[None, None]]
 
-    def check_columns(self, df, r_name, b_name, rename_cols):
+    # def check_columns(self, df, r_name, b_name, rename_cols):
         
+    #     if rename_cols:
+    #         df = df.rename(columns=rename_cols)
+    #     df.columns = df.columns.str.replace('_$', '', regex=True).str.replace('.*\.', '', regex=True).str.upper()
+    #     required_columns = {col for col in self.p10[r_name].keys()}
+    #     rename_columns = dict()
+    #     for col in required_columns:
+    #         if col not in df.columns:
+    #             for col2 in df.columns:
+    #                 if col2 in col:
+    #                     rename_columns[col2] = col
+    #     df = df.rename(columns=rename_columns)
+    #     missing_columns = set(required_columns) - set(df.columns.to_list())
+    #     check_columns = required_columns - missing_columns
+
+    #     if missing_columns:
+    #         self.append([b_name, None, ', '.join(missing_columns), None, 'Столбцы отсутствуют в слое', '', 'О', None])
+    #     else:
+    #         pass
+        
+    #     return df, check_columns
+
+    def check_columns(self, df, r_name, b_name, rename_cols):
         if rename_cols:
             df = df.rename(columns=rename_cols)
         df.columns = df.columns.str.replace('_$', '', regex=True).str.replace('.*\.', '', regex=True).str.upper()
-        required_columns = {col for col in self.p10[r_name].keys()}
+        required_columns_list = [col for col in self.p10[r_name].keys()]
+        required_columns = set(required_columns_list)
         rename_columns = dict()
-        for col in required_columns:
-            if col not in df.columns:
-                for col2 in df.columns:
-                    if col2 in col:
-                        rename_columns[col2] = col
+        # for col in required_columns:
+        #     if col not in df.columns:
+        #         for col2 in df.columns:
+        #             if col2 in col:
+        #                 rename_columns[col2] = col
+        missing_columns = set(required_columns) - set(df.columns.to_list())
+        last_columns = set(df.columns.to_list()) - set(required_columns)
+        for col in missing_columns:
+            closest = difflib.get_close_matches(col, last_columns, 1)
+            if len(closest) == 0:
+                continue
+            closest = closest[0]
+            rename_columns[closest] = col
+            last_columns.remove(closest)
+
         df = df.rename(columns=rename_columns)
         missing_columns = set(required_columns) - set(df.columns.to_list())
+        # временное решение для прописывания дефолтов
+        # for column in missing_columns:
+        #     df[column] = None
         check_columns = required_columns - missing_columns
-
+        check_columns = sorted(list(check_columns), key=lambda x: required_columns_list.index(x))
         if missing_columns:
             self.append([b_name, None, ', '.join(missing_columns), None, 'Столбцы отсутствуют в слое', '', 'О', None])
         else:
             pass
-        
-        return df, check_columns
+        return df[check_columns], check_columns
             
     def check_classid(self, cid, row_index, r_name, b_name):
         if cid not in self.p10[r_name]['CLASSID'][2]:
@@ -114,7 +150,7 @@ class Errors:
         return
         
     def good_str(self, string):
-        if string == None or string.strip() == '':
+        if string == None or str(string).strip() == '':
             return False, "Пустая строка", ''
         string = str(string)
         bad = re.findall(r'[&\n\t\r\'<>\u0008\x02]+', string)
@@ -125,6 +161,8 @@ class Errors:
             return True, 'Все верно', ''
         
     def check_str(self, string, row_index, col, col_required, r_name, b_name):
+        # if not isinstance(string, (str, type(None))):
+        #     arcpy.AddMessage(col + " " + str(string) + " " + b_name)
         str_check = self.good_str(string)
         if str_check[0]:
             return

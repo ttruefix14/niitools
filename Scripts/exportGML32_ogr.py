@@ -4,8 +4,9 @@
 import arcpy
 import shapely
 import geopandas as gpd
-from osgeo import ogr
-from osgeo import osr
+# from osgeo import ogr
+# from osgeo import osr
+from osgeo import gdal
 
 import os
 import shutil
@@ -125,7 +126,7 @@ class P10:
         # временное решение для прописывания дефолтов
         for column in missing_columns:
             df[column] = None
-        check_columns = required_columns - missing_columns
+        check_columns = required_columns# - missing_columns
         check_columns = sorted(list(check_columns), key=lambda x: required_columns_list.index(x))
         return df[check_columns + ['geometry']]
     
@@ -246,13 +247,22 @@ def removeLowerDimension(geom, gtype):
 def escape_xml_illegal_chars(unicodeString, replaceWith=r''):
 	return re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1F\uD800-\uDFFF\uFFFE\uFFFF]', replaceWith, unicodeString)
 
+# def create_gml(dirname, filename, xsd, gml_version):
+#     path = os.path.join(dirname, filename)
+#     if os.path.isfile(path):
+#         os.remove(path)
+    
+#     driver = ogr.GetDriverByName("GML")
+#     outDataSource = driver.CreateDataSource(path, options=['PREFIX=fgistp', f'FORMAT={gml_version}', r'TARGET_NAMESPACE=http://fgistp', fr'XSISCHEMAURI=http://fgistp {xsd}', 'WRITE_FEATURE_BOUNDED_BY=NO'])
+#     return outDataSource
+
 def create_gml(dirname, filename, xsd, gml_version):
     path = os.path.join(dirname, filename)
     if os.path.isfile(path):
         os.remove(path)
-    
-    driver = ogr.GetDriverByName("GML")
-    outDataSource = driver.CreateDataSource(path, options=['PREFIX=fgistp', f'FORMAT={gml_version}', r'TARGET_NAMESPACE=http://fgistp', fr'XSISCHEMAURI=http://fgistp {xsd}', 'WRITE_FEATURE_BOUNDED_BY=NO'])
+
+    driver = gdal.GetDriverByName("GML")
+    outDataSource = driver.Create(path, 0,0,0,0, ['PREFIX=fgistp', f'FORMAT={gml_version}', r'TARGET_NAMESPACE=http://fgistp', fr'XSISCHEMAURI=http://fgistp {xsd}', 'WRITE_FEATURE_BOUNDED_BY=NO'])
     return outDataSource
 
 def fc_to_gml(outSource, layerName, gdf, epsg, mask, oktmo, p10):
@@ -293,35 +303,40 @@ def fc_to_gml(outSource, layerName, gdf, epsg, mask, oktmo, p10):
     # gdf.to_file(fr"C:\Users\ya.shatalov\Desktop\Data\1_Проекты\Апшеронское\Apsheronskoe\ФГИСТП_Апшеронское\{layerName}.geojson", driver='GeoJSON')
     temp.seek(0)
     
-    driver = ogr.GetDriverByName("GeoJSON")
-    inSource = driver.Open(temp.read())
+    # driver = gdal.GetDriverByName("GeoJSON")
+    # inSource = driver.Open(temp.read())
+    inSource = gdal.OpenEx(temp.read())
     # inSource = driver.Open(fr"C:\Users\ya.shatalov\Desktop\Data\1_Проекты\Апшеронское\Apsheronskoe\ФГИСТП_Апшеронское\{layerName}.geojson")
     temp.close()
-    inLayer = inSource.GetLayer()
 
-    srs = osr.SpatialReference()
-    srs.ImportFromEPSG(epsg)
-    outLayer = outSource.GetLayerByName(layerName)
-    if not outLayer:
-        outLayer = outSource.CreateLayer(layerName, srs)
+    gdal.VectorTranslate(outSource, inSource, accessMode="append", geometryType="PROMOTE_TO_MULTI", layerName=layerName)
+    
+    #old way
+    # inLayer = inSource.GetLayer()
 
-    layerDefn = inLayer.GetLayerDefn()
-    outLayerDefn = outLayer.GetLayerDefn()
-    for n in range(0, layerDefn.GetFieldCount()):
-        defn = layerDefn.GetFieldDefn(n)
-        if outLayerDefn.GetFieldIndex(defn.GetName()) == -1:
-            outLayer.CreateField(defn)
+    # srs = osr.SpatialReference()
+    # srs.ImportFromEPSG(epsg)
+    # outLayer = outSource.GetLayerByName(layerName)
+    # if not outLayer:
+    #     outLayer = outSource.CreateLayer(layerName, srs)
+
+    # layerDefn = inLayer.GetLayerDefn()
+    # outLayerDefn = outLayer.GetLayerDefn()
+    # for n in range(0, layerDefn.GetFieldCount()):
+    #     defn = layerDefn.GetFieldDefn(n)
+    #     if outLayerDefn.GetFieldIndex(defn.GetName()) == -1:
+    #         outLayer.CreateField(defn)
             
     
-    for feature in inLayer:
-        geom = feature.GetGeometryRef()
+    # for feature in inLayer:
+    #     geom = feature.GetGeometryRef()
         
-        # geom = feature.GetGeometryRef()#.RemoveLowerDimensionSubGeoms()
-        geom.AssignSpatialReference(srs)
-        feature.SetGeometry(geom)
+    #     # geom = feature.GetGeometryRef()#.RemoveLowerDimensionSubGeoms()
+    #     geom.AssignSpatialReference(srs)
+    #     feature.SetGeometry(geom)
 
-        print(geom.GetSpatialReference())
-        outLayer.CreateFeature(feature)
+    #     print(geom.GetSpatialReference())
+    #     outLayer.CreateFeature(feature)
 
 def splitXml(path, splitSize, fileSize):
     splitSize = int((fileSize / ceil(fileSize / splitSize)) + 1)
@@ -398,7 +413,7 @@ def execute():
 
     border_gml = create_gml(params.output_dirname, 'Карта границ населенных пунктов (в том числе границ образуемых населенных пунктов).gml', params.xsd[0], params.gml_version)
     omz_gml = create_gml(params.output_dirname, 'Карта планируемого размещения объектов.gml', params.xsd[0], params.gml_version)
-    fz_gml= create_gml(params.output_dirname, 'Карта функциональных зон поселения или городского округа.gml', params.xsd[0], params.gml_version)
+    fz_gml = create_gml(params.output_dirname, 'Карта функциональных зон поселения или городского округа.gml', params.xsd[0], params.gml_version)
     mo_gml = create_gml(params.output_dirname, 'Материалы по обоснованию в виде карт.gml', params.xsd[0], params.gml_version)
 
 
@@ -478,10 +493,15 @@ def execute():
         fc_to_gml(mo_gml, name, mo_table, epsg, clipping_mask if not no_clip else None, params.OKTMO, p10.p10)
         
         
-    border_gml.Release()
-    omz_gml.Release()
-    fz_gml.Release()
-    mo_gml.Release()
+    # border_gml.Release()
+    # omz_gml.Release()
+    # fz_gml.Release()
+    # mo_gml.Release()
+
+    border_gml = None
+    omz_gml = None
+    fz_gml = None
+    mo_gml = None
 
     for filename in os.listdir(params.output_dirname):
         if not filename.endswith(".gml"):

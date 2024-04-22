@@ -28,7 +28,9 @@ call "C:\Program Files\ArcGIS\Pro\bin\Python\Scripts\activate.bat" %ENV_NAME% & 
 	pip install geopandas==0.10.2
 	pip install ezdxf
 	pip install PyMuPdf --ignore-installed
-	ECHO ^-^-^> shapely=2.0.1 geopandas=0.10.2 ezdxf installed
+	conda remove gdal --force
+	pip install GDAL-3.3.3-cp39-cp39-win_amd64.whl
+	ECHO ^-^-^> shapely=2.0.1 geopandas=0.10.2 ezdxf gdal=3.3.3 installed
 	)
 
 CALL "%PRO_PATH%\Scripts\proswap.bat" %ENV_NAME%

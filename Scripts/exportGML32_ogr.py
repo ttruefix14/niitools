@@ -189,7 +189,7 @@ def makeValidForP10(row_object, name, OKTMO, p10):
 
         if col == 'OKTMO':
             if type(value) == str:
-                if len(value) < 2:
+                if len(value) < 6:
                     value = OKTMO
                 else:
                     pass
@@ -198,6 +198,9 @@ def makeValidForP10(row_object, name, OKTMO, p10):
 
         if value is None or value != value:
             value = p10.get(name).get(col)[5]
+        if type(value) == str:
+            if value.isspace() or value == "":
+                value = p10.get(name).get(col)[5]
 
         if p10.get(name).get(col)[1] == 'Целое':
             try:
@@ -209,7 +212,7 @@ def makeValidForP10(row_object, name, OKTMO, p10):
             try:
                 value = round(value, 2)
             except:
-                value = 0              
+                value = 0
 
         if isinstance(value, (float, float64)):
             value = round(value, 2)

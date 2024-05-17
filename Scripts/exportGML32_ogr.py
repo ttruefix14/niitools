@@ -159,7 +159,9 @@ def tab_to_gdf(in_table, input_fields=None, where_clause=None, spatial_reference
 def create_custom_transformation(inputSRS, outputSRS, customGeoTransfm, geoTransfm):
     if not outputSRS:
         return None
-    if inputSRS == outputSRS or inputSRS.exportToString() == outputSRS.exportToString():
+    if inputSRS == outputSRS or inputSRS.exportToString() == outputSRS.exportToString() or inputSRS.factoryCode == outputSRS.factoryCode:
+        return None
+    if inputSRS.factoryCode == 4326:
         return None
     dirname = os.path.join(os.getenv('APPDATA'), 'Esri', 'ArcGISPro', 'ArcToolbox', 'CustomTransformations')
     transfList = arcpy.ListTransformations(inputSRS, outputSRS)
@@ -195,7 +197,9 @@ def makeValidForP10(row_object, name, OKTMO, p10):
                     pass
             else:
                 value = OKTMO
-
+        # Устранить
+        if value == 0:
+            value == None
         if value is None or value != value:
             value = p10.get(name).get(col)[5]
         if type(value) == str:

@@ -199,7 +199,7 @@ def makeValidForP10(row_object, name, OKTMO, p10):
                 value = OKTMO
         # Устранить
         if value == 0:
-            value == None
+            value = None
         if value is None or value != value:
             value = p10.get(name).get(col)[5]
         if type(value) == str:

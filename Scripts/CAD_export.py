@@ -14,7 +14,7 @@ def execute():
     cemetery = arcpy.GetParameterAsText(3)
     output_file = arcpy.GetParameterAsText(4)
 
-    arcpy.env.addOutputToMap = False
+    arcpy.env.addOutputsToMap = False
 
     
 
@@ -86,7 +86,7 @@ def execute():
 
 
     dxf.saveas(output_file)
-    arcpy.env.addOutputToMap = True
+    arcpy.env.addOutputsToMap = True
 
 if __name__ == '__main__':
     execute()

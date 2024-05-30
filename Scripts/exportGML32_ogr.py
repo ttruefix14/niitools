@@ -270,7 +270,7 @@ def create_gml(dirname, filename, xsd, gml_version):
         os.remove(path)
 
     driver = gdal.GetDriverByName("GML")
-    outDataSource = driver.Create(path, 0,0,0,0, ['PREFIX=fgistp', f'FORMAT={gml_version}', r'TARGET_NAMESPACE=http://fgistp', fr'XSISCHEMAURI=http://fgistp {xsd}', 'WRITE_FEATURE_BOUNDED_BY=NO'])
+    outDataSource = driver.Create(path, 0,0,0,0, ['PREFIX=fgistp', f'FORMAT={gml_version}', r'TARGET_NAMESPACE=http://fgistp', fr'XSISCHEMAURI=http://fgistp fgistp-10-izm-698.xsd', 'WRITE_FEATURE_BOUNDED_BY=NO']) #{xsd}
     return outDataSource
 
 def fc_to_gml(outSource, layerName, gdf, epsg, mask, oktmo, p10):

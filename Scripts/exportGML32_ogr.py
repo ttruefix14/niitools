@@ -186,6 +186,7 @@ def makeValidForP10(row_object, name, OKTMO, p10):
     name = name.split('_')[0]
 
     for col, value in row_object.items():
+        # если колонка не по приказу пропускаем
         if col not in p10.get(name):
             continue
 
@@ -197,15 +198,22 @@ def makeValidForP10(row_object, name, OKTMO, p10):
                     pass
             else:
                 value = OKTMO
-        # Устранить
+
+        # Нули преобразуем в null, для шейпов
         if value == 0:
             value = None
-        if value is None or value != value:
+        # NaN Заменяем на None
+        if value != value:
+            value = None
+        # Для null вписываем значения по дефолту
+        if value is None:
             value = p10.get(name).get(col)[5]
+        # Для пустых строк вписываем значения по дефолту
         if type(value) == str:
             if value.isspace() or value == "":
                 value = p10.get(name).get(col)[5]
 
+        # Если тип поля целое число - пробуем конвертировать в целое число либо заменяем на ноль для значений со справочниками
         if p10.get(name).get(col)[1] == 'Целое':
             try:
                 value = int(value)
@@ -222,6 +230,9 @@ def makeValidForP10(row_object, name, OKTMO, p10):
         if isinstance(value, (float, float64)):
             value = round(value, 2)
 
+        # Преобразуем null в пустые строки
+        # if value != value or value is None:
+        #     value = ""
         row_object[col] = value
     return row_object
 
@@ -270,7 +281,7 @@ def create_gml(dirname, filename, xsd, gml_version):
         os.remove(path)
 
     driver = gdal.GetDriverByName("GML")
-    outDataSource = driver.Create(path, 0,0,0,0, ['PREFIX=fgistp', f'FORMAT={gml_version}', r'TARGET_NAMESPACE=http://fgistp', fr'XSISCHEMAURI=http://fgistp fgistp-10-izm-698.xsd', 'WRITE_FEATURE_BOUNDED_BY=NO']) #{xsd}
+    outDataSource = driver.Create(path, 0,0,0,0, [f'FORMAT={gml_version}', 'WRITE_FEATURE_BOUNDED_BY=NO']) # , 'XSISCHEMA=OFF' {xsd} fgistp-10-izm-698.xsd fr'XSISCHEMAURI=http://fgistp {xsd}', r'TARGET_NAMESPACE=http://fgistp' 'PREFIX=fgistp', fr'TARGET_NAMESPACE=http://www.opengis.net/gml{r"/3.2" if gml_version == "GML3.2" else ""}',  f'GML_FEATURE_COLLECTION={"YES" if gml_version == "GML3" else "NO"}'
     return outDataSource
 
 def fc_to_gml(outSource, layerName, gdf, epsg, mask, oktmo, p10):

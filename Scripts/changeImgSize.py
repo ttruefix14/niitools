@@ -26,7 +26,6 @@ def execute():
                 img = Image.open(file)
                 img = changeSize(img, dpi)
                 img.save(file, dpi=(dpi,dpi))
-                raise NameError('НЕ ПАШЕТ')
             except Exception as e:
                 if hasattr(e, 'message'):
                     arcpy.AddMessage(f'{f}: {e.message}')

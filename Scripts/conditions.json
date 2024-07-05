@@ -1,0 +1,2880 @@
+{
+    "Education": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EDU_STYPE": {
+            "CLASSID": [
+                602010102
+            ]
+        },
+        "EDU_SDTYPE": {
+            "CLASSID": [
+                602010104
+            ]
+        },
+        "SCI_TYPE": {
+            "CLASSID": [
+                602010106
+            ]
+        },
+        "PRG_TYPE": {
+            "CLASSID": [
+                602010102,
+                602010103
+            ]
+        },
+        "EDU_TUNIT": {
+            "CLASSID": [
+                602010104
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "Culture": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "CU_TYPE": {
+            "CLASSID": [
+                602010201
+            ]
+        },
+        "CLB_TYPE": {
+            "CLASSID": [
+                602010202
+            ]
+        },
+        "ENT_TYPE": {
+            "CLASSID": [
+                602010203
+            ]
+        },
+        "LB_STOCK": {
+            "CLASSID": [
+                602010201,
+                602010103
+            ]
+        },
+        "EXBAREA": {
+            "CLASSID": [
+                602010201,
+                602010103
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "Sport": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "AF_TYPE": {
+            "CLASSID": [
+                602010302
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "Health": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "MD_STYPE": {
+            "CLASSID": [
+                602010401
+            ]
+        },
+        "AMB_TYPE": {
+            "CLASSID": [
+                602010402
+            ]
+        },
+        "MST_TYPE": {
+            "CLASSID": [
+                602010403
+            ]
+        },
+        "SU_TYPE": {
+            "CLASSID": [
+                602010404
+            ]
+        },
+        "MSD_TYPE": {
+            "CLASSID": [
+                602010406
+            ]
+        },
+        "MC_TYPE": {
+            "CLASSID": [
+                602010407
+            ]
+        },
+        "CAPACITY_S": {
+            "CLASSID": [
+                602010401,
+                602010402,
+                602010406
+            ]
+        },
+        "CAPACITY24": {
+            "CLASSID": [
+                602010401,
+                602010405
+            ]
+        },
+        "CAPACITY": {
+            "CLASSID": [
+                602010401,
+                602010402,
+                602010405
+            ]
+        },
+        "NUM_CARS": {
+            "CLASSID": [
+                602010401,
+                602010402,
+                602010405,
+                602010407
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "Social": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "ST_STYPE": {
+            "CLASSID": [
+                602010501
+            ]
+        },
+        "SP_STYPE": {
+            "CLASSID": [
+                602010502
+            ]
+        },
+        "SSAH_STYPE": {
+            "CLASSID": [
+                602010503
+            ]
+        },
+        "USA_STYPE": {
+            "CLASSID": [
+                602010504
+            ]
+        },
+        "CAPACITY": {
+            "CLASSID": [
+                602010501,
+                602010103
+            ]
+        },
+        "PERSON_PH": {
+            "CLASSID": [
+                602010502,
+                602010103
+            ]
+        },
+        "PERSON_PD": {
+            "CLASSID": [
+                602010502,
+                602010103
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "Recreation": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "HOT_STYPE": {
+            "CLASSID": [
+                602010601
+            ]
+        },
+        "SAF_STYPE": {
+            "CLASSID": [
+                602010602
+            ]
+        },
+        "CHI_STYPE": {
+            "CLASSID": [
+                602010603
+            ]
+        },
+        "AL_STYPE": {
+            "CLASSID": [
+                602010605
+            ]
+        },
+        "TEM_TYPE": {
+            "CLASSID": [
+                602010607
+            ]
+        },
+        "CAPACITY": {
+            "CLASSID": [
+                602010601,
+                6020106051
+            ]
+        },
+        "PERSON_PD": {
+            "CLASSID": [
+                602010605
+            ]
+        },
+        "PERS_PD": {
+            "CLASSID": [
+                602010605
+            ]
+        },
+        "ONE_TIME": {
+            "CLASSID": [
+                602010605
+            ]
+        },
+        "BOAT_COUNT": {
+            "CLASSID": [
+                602010605
+            ]
+        },
+        "SEAT_COUNT": {
+            "CLASSID": [
+                602010605
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "Resort": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "AuthorityService": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "AB_STYPE": {
+            "CLASSID": [
+                602010801
+            ]
+        },
+        "CR_STYPE": {
+            "CLASSID": [
+                602010802
+            ]
+        },
+        "TRD_STYPE": {
+            "CLASSID": [
+                602010804
+            ]
+        },
+        "RS_STYPE": {
+            "CLASSID": [
+                602010805
+            ]
+        },
+        "PU_STYPE": {
+            "CLASSID": [
+                602010806
+            ]
+        },
+        "TRD_AREA": {
+            "CLASSID": [
+                602010804
+            ]
+        },
+        "TRD_COUNT": {
+            "TRD_STYPE": [
+                2
+            ]
+        },
+        "CAPACITY": {
+            "TRD_STYPE": [
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        }
+    },
+    "Public": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "TPARK_TYPE": {
+            "CLASSID": [
+                602010901
+            ]
+        },
+        "PKIO_TYPE": {
+            "CLASSID": [
+                602010902
+            ]
+        },
+        "PED_TYPE": {
+            "CLASSID": [
+                602010903
+            ]
+        },
+        "AQ_STYPE": {
+            "CLASSID": [
+                602010904
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "Manufacturing": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "MP_TYPE": {
+            "CLASSID": [
+                602020101,
+                602020111
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        }
+    },
+    "Agriculture": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "CAPACITY": {
+            "CLASSID": [
+                602020202,
+                602020203,
+                602020204,
+                602020205,
+                602020206,
+                602020207,
+                602020208,
+                602020210,
+                602020211,
+                602020212,
+                602020213
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "ServiceFacility": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "WasteFacility": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "ORO_NUMBER": {
+            "CLASSID": [
+                602020401
+            ]
+        },
+        "ORO_TYPE": {
+            "CLASSID": [
+                602020401
+            ]
+        },
+        "ORO_STYPE": {
+            "CLASSID": [
+                602020401
+            ]
+        },
+        "RECYC_TYPE": {
+            "CLASSID": [
+                602020402
+            ]
+        },
+        "BUR_TYPE": {
+            "CLASSID": [
+                602020403
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "RailwayLine": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "RailwayFacility": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "RST_TYPE": {
+            "CLASSID": [
+                602030201
+            ]
+        },
+        "RST_CLASS": {
+            "CLASSID": [
+                602030201,
+                602030202
+            ]
+        },
+        "RFO_TYPE": {
+            "CLASSID": [
+                602030205
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "Road": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "CAT_EXIST": {
+            "STATUS": [
+                1
+            ]
+        },
+        "CAT_PLAN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "SURFACE_EXIST": {
+            "STATUS": [
+                1
+            ]
+        },
+        "SURFACE_PLAN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "REG_RDTYPE": {
+            "CLASSID": [
+                602030302
+            ]
+        },
+        "RDWIN_TYPE": {
+            "TIME_LTYPE": [
+                3
+            ]
+        },
+        "RDWIN_CAT": {
+            "TIME_LTYPE": [
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "Street": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "STR_R_TYPE": {
+            "CLASSID": [
+                602030405
+            ]
+        },
+        "STR_L_TYPE": {
+            "CLASSID": [
+                602030406
+            ]
+        },
+        "SURFACE_EXIST": {
+            "STATUS": [
+                1
+            ]
+        },
+        "SURFACE_PLAN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "StreetV": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "SURFACE_EXIST": {
+            "STATUS": [
+                1
+            ]
+        },
+        "SURFACE_PLAN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "TranspLogisticObj": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "PublicTransportObj": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        }
+    },
+    "PublicTransportService": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        }
+    },
+    "AutoService": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "GAS_ST_TYPE": {
+            "CLASSID": [
+                602030901
+            ]
+        },
+        "FUEL_COUNT": {
+            "CLASSID": [
+                602030901
+            ]
+        },
+        "POST_COUNT": {
+            "CLASSID": [
+                602030902
+            ]
+        },
+        "PRKNG_TYPE": {
+            "CLASSID": [
+                602030903
+            ]
+        },
+        "PRKNG_LVL": {
+            "CLASSID": [
+                602030903
+            ]
+        },
+        "PRKNG_TIME": {
+            "CLASSID": [
+                602030903
+            ]
+        },
+        "PRKNG_FLS": {
+            "CLASSID": [
+                602030903
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        }
+    },
+    "PublicTransportLine": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "PublicTransportStops": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "STOP_TYPE": {
+            "CLASSID": [
+                602031106
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "AirTransportObj": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "AVIA_TYPE": {
+            "CLASSID": [
+                602031201,
+                6020312041
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "WaterTransportObj": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "PASS_TERM": {
+            "CLASSID": [
+                602031301,
+                602031303,
+                602031305
+            ]
+        },
+        "FERRY_CRGT": {
+            "CLASSID": [
+                602031306
+            ]
+        },
+        "FERRY_MVT": {
+            "CLASSID": [
+                602031306
+            ]
+        },
+        "YATCH_CLS": {
+            "CLASSID": [
+                602031307
+            ]
+        },
+        "CAPACITY": {
+            "CLASSID": [
+                602031301,
+                602031303,
+                602031305
+            ]
+        },
+        "FREIGHT": {
+            "CLASSID": [
+                602031301,
+                602031303
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "WaterWays": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "CustomControl": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "TransportObj": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "BRIDGE_T": {
+            "CLASSID": [
+                602031601
+            ]
+        },
+        "TUNNEL_T": {
+            "CLASSID": [
+                602031603
+            ]
+        },
+        "CROSSP_T": {
+            "CLASSID": [
+                602031604
+            ]
+        },
+        "CROSSR_T": {
+            "CLASSID": [
+                602031605
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "ElectricPowerStation": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "WEAR_PRCNT": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "FACT_USE": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "HEAT_POWER": {
+            "CLASSID": [
+                602040104,
+                602040105,
+                602040106,
+                602040113,
+                602040117,
+                602040120
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "ElectricTransformer": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DANGER_OBJ": {
+            "CLASSID": [
+                602040201,
+                602040202,
+                602040203,
+                602040204,
+                602040205,
+                602040206,
+                602040207
+            ]
+        },
+        "WEAR_PRCNT": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "FACT_USE": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "POWER": {
+            "CLASSID": [
+                602040201,
+                602040202,
+                602040203,
+                602040204,
+                602040205,
+                602040206,
+                602040207,
+                602040208,
+                602040209,
+                602040210,
+                602040211,
+                602040212,
+                602040213,
+                602040214,
+                602040215,
+                602040216,
+                602040217,
+                602040221,
+                602040222,
+                602040224
+            ]
+        },
+        "AMOUNT": {
+            "CLASSID": [
+                602040201,
+                602040202,
+                602040203,
+                602040204,
+                602040205,
+                602040206,
+                602040207,
+                602040208,
+                602040209,
+                602040210,
+                602040211,
+                602040212,
+                602040213,
+                602040214
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "ElectricLine": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "WEAR_PRCNT": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "Pipeline": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "WEAR_PRCNT": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "CAT_MAIN": {
+            "CLASSID": [
+                602040403
+            ]
+        },
+        "ZMR_SIZE": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "GasFacility": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "WEAR_PRCNT": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "FACT_USE": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "GasPipeline": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "WEAR_PRCNT": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "OilFacility": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "WEAR_PRCNT": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "FACT_USE": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "OUTPUT": {
+            "CLASSID": [
+                602040701,
+                602040702,
+                602040703,
+                602040704,
+                602040705,
+                602040706,
+                602040710,
+                602040711,
+                602040712
+            ]
+        },
+        "VOLUME": {
+            "CLASSID": [
+                602040707,
+                602040708,
+                602040709
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "OilPipeline": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "WEAR_PRCNT": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "NAMEDOCOSN": {
+            "CLASSID": [
+                602040801,
+                60204080,
+                2602040803
+            ]
+        },
+        "DATEDOCOSN": {
+            "CLASSID": [
+                602040801,
+                60204080,
+                2602040803
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "CLASSID": [
+                602040801,
+                60204080,
+                2602040803
+            ]
+        }
+    },
+    "ThermalFacility": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "FUEL_TYPE": {
+            "CLASSID": [
+                602040901
+            ]
+        },
+        "HT_FUEL": {
+            "CLASSID": [
+                602040901
+            ]
+        },
+        "WEAR_PRCNT": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "FACT_USE": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "HT_POWER": {
+            "CLASSID": [
+                602040901,
+                602040902,
+                602040903
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "PRKUB": {
+            "CLASSID": [
+                602040904
+            ]
+        }
+    },
+    "ThermalPipeline": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "WEAR_PRCNT": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "WaterFacility": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "WATER_STYPE": {
+            "CLASSID": [
+                602041101
+            ]
+        },
+        "WEAR_PRCNT": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "FACT_USE": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "SIZE_ZSO_1": {
+            "CLASSID": [
+                602041101,
+                602041106
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "WaterPipeline": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "WEAR_PRCNT": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "SewerFacility": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "WEAR_PRCNT": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "FACT_USE": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "SNOW_TYPE": {
+            "CLASSID": [
+                602041306
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        }
+    },
+    "SewerPipeline": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "WEAR_PRCNT": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "TelecomFacility": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "WEAR_PRCNT": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "FACT_USE": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "CAPACITY": {
+            "CLASSID": [
+                602041501
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        }
+    },
+    "TelecomNetworkLine": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "WEAR_PRCNT": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "COMM_CTYPE": {
+            "CLASSID": [
+                602041602
+            ]
+        },
+        "CABLE_TYPE": {
+            "CLASSID": [
+                602041602
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "HydraulicStructures": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "WEAR_PRCNT": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "FACT_USE": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "EngProtectionObj": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "Prison": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        }
+    },
+    "EmergencyProtectionObj": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "FP_TYPE": {
+            "CLASSID": [
+                602050202
+            ]
+        },
+        "FP_CLASS": {
+            "CLASSID": [
+                602050202
+            ]
+        },
+        "FE_COUNT": {
+            "CLASSID": [
+                602050202
+            ]
+        },
+        "W_SOURCE": {
+            "CLASSID": [
+                602050202
+            ]
+        },
+        "FS_OBJECTS": {
+            "CLASSID": [
+                602050203
+            ]
+        },
+        "D_OBJECTS": {
+            "CLASSID": [
+                602050204
+            ]
+        },
+        "S_ALERT": {
+            "CLASSID": [
+                602050205
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        }
+    },
+    "Cemetery": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "CEMET_TYPE": {
+            "CLASSID": [
+                602020301
+            ]
+        },
+        "CEMET_STYPE": {
+            "CLASSID": [
+                602020301
+            ]
+        },
+        "CEMET_WTYPE": {
+            "CLASSID": [
+                602050302
+            ]
+        },
+        "CEMET_STAT": {
+            "CLASSID": [
+                602020301,
+                602050302
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "EnvMonitoring": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        }
+    },
+    "WildlifeProtection": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        }
+    },
+    "OtherObject": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        }
+    },
+    "FloodArea": {
+        "FLOODING_T": {
+            "CLASSID": [
+                603011401
+            ]
+        },
+        "UDERFL_T": {
+            "CLASSID": [
+                603011402
+            ]
+        }
+    },
+    "OtherZone": {
+        "AEROSZONE": {
+            "CLASSID": [
+                603011702
+            ]
+        }
+    },
+    "Heritage": {
+        "HER_TYPE": {
+            "CLASSID": [
+                604010101
+            ]
+        },
+        "ANS_TYPE": {
+            "CLASSID": [
+                604010102
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        }
+    },
+    "NatureProtectArea": {
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        }
+    },
+    "SpecialEconomicArea": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "MineralDep": {
+        "MIN_MTYPE": {
+            "CLASSID": [
+                609010204
+            ]
+        },
+        "MIN_NTYPE": {
+            "CLASSID": [
+                609010205
+            ]
+        }
+    },
+    "FunctionalZone": {
+        "FZ_MFSTP": {
+            "CLASSID": [
+                701010301
+            ]
+        },
+        "FZ_ODSTP": {
+            "CLASSID": [
+                701010302
+            ]
+        },
+        "FZ_INGSTP": {
+            "CLASSID": [
+                701010404
+            ]
+        },
+        "FZ_TRSTP": {
+            "CLASSID": [
+                701010405
+            ]
+        },
+        "FZ_SHSTP": {
+            "CLASSID": [
+                701010504
+            ]
+        },
+        "FZ_RECSTP": {
+            "CLASSID": [
+                701010602
+            ]
+        },
+        "FZ_ORECSTP": {
+            "CLASSID": [
+                701010606
+            ]
+        },
+        "POP_DEN": {
+            "CLASSID": [
+                701010100,
+                7010103031
+            ]
+        },
+        "POPULATION": {
+            "CLASSID": [
+                701010100,
+                7010103031
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "REG_STATUS": {
+            "STATUS": [
+                2
+            ]
+        }
+    },
+    "ResortArea": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "TraditionalArea": {
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "InvestmentZone": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        },
+        "KADASTRZU": {
+            "STATUS": [
+                1,
+                3,
+                4
+            ]
+        },
+        "NAMEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "DATEDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "NUMBERDOCOSN": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "AreaBaseDevelopment": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVENT_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    },
+    "GreeneryPlanting": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "OZSN_TYPE": {
+            "CLASSID": [
+                705010500
+            ]
+        }
+    },
+    "ForestPark": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "EnvDanger": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        }
+    },
+    "Forest": {
+        "FOREST_CAT": {
+            "CLASSID": [
+                706010100
+            ]
+        },
+        "FOREST_T": {
+            "CLASSID": [
+                706010100
+            ],
+            "FOREST_CAT": [
+                3
+            ]
+        },
+        "FOREST_VAL": {
+            "CLASSID": [
+                706010100
+            ],
+            "FOREST_CAT": [
+                4
+            ]
+        },
+        "FOREST_OS": {
+            "CLASSID": [
+                706010100
+            ]
+        }
+    },
+    "Hydro": {
+        "NUMBER": {
+            "STATUS": [
+                2,
+                3
+            ]
+        },
+        "EVEN_TIME": {
+            "STATUS": [
+                2,
+                3
+            ],
+            "REG_STATUS": [
+                1,
+                2
+            ]
+        }
+    }
+}

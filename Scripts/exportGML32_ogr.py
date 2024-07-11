@@ -218,7 +218,7 @@ def makeValidForP10(row_object, name, OKTMO, p10):
             try:
                 value = int(value)
             except:
-                if p10.get(name).get(col)[4] is not None:
+                if p10.get(name).get(col)[4] is not None: # если домен то None если не домен то 0?? фига знает как лучше
                     value = 0
 
         if p10.get(name).get(col)[1] == 'Вещественное':

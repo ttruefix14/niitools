@@ -4,7 +4,7 @@ from PIL import Image
 Image.MAX_IMAGE_PIXELS = 933120000
 
 def isImage(f: str) -> bool:
-    if f.endswith('.jpg'):
+    if f.lower().endswith('.jpg'):
         return True
 
 def changeSize(img, new_dpi):

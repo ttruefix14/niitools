@@ -18,10 +18,11 @@ class Params:
         self.ZU = params[3].valueAsText
         self.FZ = params[4].valueAsText
         self.LU = params[5].valueAsText
-        self.DU = params[6].valueAsText
-        self.du_type = params[7].valueAsText
+        self.LU_NOTE = params[6].valueAsText if params[6].value else None
+        self.DU = params[7].valueAsText
+        self.du_type = params[8].valueAsText
         
-        self.output_xls = params[8].valueAsText
+        self.output_xls = params[9].valueAsText
                 
 def table_to_data_frame(in_table, input_fields=None, where_clause=None):
     """Function will convert an arcgis table into a pandas dataframe with an object ID index, and the selected
@@ -138,7 +139,7 @@ def main():
     arcpy.conversion.FeatureClassToFeatureClass(params.NP, output_db, "NP_ex", "STATUS_ADM = 1")
     arcpy.conversion.FeatureClassToFeatureClass(params.ZU, output_db, "ZU")
     arcpy.conversion.FeatureClassToFeatureClass(params.FZ, output_db, "FZ")
-    arcpy.conversion.FeatureClassToFeatureClass(params.LU, output_db, "LU_ex", "STATUS = 1 And (Note <> 'Двойной учет' Or Note IS NULL)")
+    arcpy.conversion.FeatureClassToFeatureClass(params.LU, output_db, "LU_ex", "STATUS = 1" if not params.LU_NOTE else f"STATUS = 1 And ({params.LU_NOTE} <> 'Двойной учет' Or {params.LU_NOTE} IS NULL)")
     arcpy.conversion.FeatureClassToFeatureClass(params.LU, output_db, "LU_plan", "STATUS = 2")
     arcpy.conversion.FeatureClassToFeatureClass(params.DU, output_db, "DU_temp")#, "DU_TYPE IN ('После 2016/Нет информации', 'искл') And (Note <> 'Амнистия' Or Note IS NULL)")
     arcpy.management.Dissolve(output_db + "\\DU_temp", output_db + '\\DU', ['DU_TYPE'])

@@ -377,6 +377,16 @@ def execute():
     else:
         current_dict = dict.fromkeys(lu_columns, 0)
 
+# КОСТЫЫЫЫЫЫЫЛЬ
+    LU_NP_to = LU_NP_minus
+    current_dict_minus = dict.fromkeys(lu_columns, 0)
+    for cat in list(dict.fromkeys(LU_NP_to['CATEGORY']).keys()):
+        current = LU_NP_to.loc[LU_NP_to['CATEGORY'] == cat]
+        if len(current) > 0:
+            current_dict_minus[cat] = current['Area'].sum()
+    
+    current_dict = {key: value - current_dict_minus.get(key, 0) for key, value in current_dict.items()}
+
     arcpy.AddMessage("lu columns: " + str(lu_columns))
     arcpy.AddMessage("current_dict: " + str(current_dict))
 

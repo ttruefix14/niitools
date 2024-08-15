@@ -205,6 +205,9 @@ def execute():
     LU_NP_minus['Shape_Area'] = LU_NP_minus.apply(lambda row: row["SHAPE@"].area, axis=1, result_type='reduce')
     LU_int_minus = table_to_data_frame(os.path.join(output_db, 'LU_int_minus'), ['CLASSID', 'CLASSID_1'])
     LU_int_minus['Shape_Area'] = LU_int_minus.apply(lambda row: row["SHAPE@"].area, axis=1, result_type='reduce')
+    NP_vkl = table_to_data_frame(os.path.join(output_db + '\\NP_vkl'))
+    NP_vkl['Shape_Area'] = NP_vkl.apply(lambda row: row["SHAPE@"].area, axis=1, result_type='reduce')
+    NP_vkl['Area'] = NP_vkl['Shape_Area']/10000
     FZ_NP['SI+PLAN'], SI_NP['SI'], FZ_MO['SI+PLAN'], SI_MO['SI'], LU_int['Area'], LU_S['Area']  = FZ_NP['Shape_Area']/10000, SI_NP['Shape_Area']/10000, FZ_MO['Shape_Area']/10000, SI_MO['Shape_Area']/10000, LU_int['Shape_Area']/10000, LU_S['Shape_Area']/10000
     AdmeMO['Area'] = AdmeMO['Shape_Area']/10000
     LU_NP['Area'] = LU_NP['Shape_Area']/10000
@@ -361,7 +364,7 @@ def execute():
     lu_columns = []
     for cat in xl['CATEGORY'].to_list():
         if cat == 'Земли населенных пунктов':
-            if float(LU_NP_vkl['Area'].sum()) > 0.05:
+            if float(NP_vkl['Area'].sum()) > 0.05:
                 lu_columns.append(cat)
         elif cat in LU_int['CATEGORY_y'].to_list():
             lu_columns.append(cat)
@@ -428,6 +431,11 @@ def execute():
                         
             catAreaS = float(LU_S.loc[LU_S['CATEGORY'] == cat, ['Area']].sum())
             catAreaP = float(LU_int.loc[LU_int['CATEGORY_y'] == cat, ['Area']].sum()) - float(LU_int.loc[LU_int['CATEGORY_x'] == cat, ['Area']].sum()) - float(LU_int_minus.loc[LU_int_minus['CATEGORY'] == cat, ['Area']].sum())/2
+            
+            arcpy.AddMessage("lu_columns: " + str(lu_columns))
+
+            arcpy.AddMessage("current_dict: " + str(current_dict))
+            
             block = pd.DataFrame([['1.'+ str(o), cat, catAreaS, catAreaP]+list(current_dict.values())+[None]], columns=['Ext_Zone_Code', 'Zone', 'SI', 'PLAN']+lu_columns+['ИТОГО'])
             Categories = Categories.append(block, ignore_index=False, verify_integrity=False, sort=False)
             o += 1

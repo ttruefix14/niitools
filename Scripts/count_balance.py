@@ -386,6 +386,7 @@ def execute():
     for cat in list(dict.fromkeys(LU_NP_to['CATEGORY']).keys()):
         current = LU_NP_to.loc[LU_NP_to['CATEGORY'] == cat]
         if len(current) > 0:
+            
             current_dict_minus[cat] = current['Area'].sum()
     
     current_dict = {key: value - current_dict_minus.get(key, 0) for key, value in current_dict.items()}
@@ -423,6 +424,9 @@ def execute():
                 LU_NP_to = LU_int.loc[LU_int['CATEGORY_x'] == cat]
                 current_dict = dict.fromkeys(lu_columns, 0)
                 for cat2 in list(dict.fromkeys(LU_NP_to['CATEGORY_y']).keys()):
+                    #CHEEECK
+                    if cat2 not in lu_columns:
+                        continue
                     current = LU_NP_to.loc[LU_NP_to['CATEGORY_y'] == cat2]
                     if len(current) > 0:
                         current_dict[cat2] = current['Area'].sum()

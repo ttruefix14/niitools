@@ -5,8 +5,9 @@ import arcpy
 import shapely
 import geopandas as gpd
 # from osgeo import ogr
-# from osgeo import osr
+from osgeo import osr
 from osgeo import gdal
+gdal.UseExceptions()
 
 import os
 import shutil
@@ -120,6 +121,8 @@ class P10:
             df[column] = None
         check_columns = required_columns# - missing_columns
         check_columns = sorted(list(check_columns), key=lambda x: required_columns_list.index(x))
+        df.columns=df.columns.str.slice(0, 10) # обрезаем до 10 символов
+        check_columns = [column[:10] for column in check_columns]
         return df[check_columns + ['geometry']]
     
 def tab_to_gdf(in_table, input_fields=None, where_clause=None):
@@ -193,16 +196,19 @@ def makeValidForP10(row_object, name, OKTMO, p10):
 
         if p10.get(name).get(col)[1] == 'Вещественное':
             try:
-                value = round(value, 2)
+                value = round(value, 6)
             except:
                 value = 0
 
         if isinstance(value, (float, float64)):
-            value = round(value, 2)
+            value = round(value, 6)
 
         # Преобразуем null в пустые строки
         # if value != value or value is None:
         #     value = ""
+        if p10.get(name).get(col)[1] == 'Символьное':
+            if value is None:
+                value = ""
         row_object[col] = value
     return row_object
 
@@ -238,13 +244,15 @@ def get_shapefile(dirname, filename):
     if not os.path.exists(dirname):
         os.makedirs(dirname)
 
-    driver = gdal.GetDriverByName("ESRI Shapefile")
+    # driver = gdal.GetDriverByName("ESRI Shapefile")
+    driver = gdal.GetDriverByName("MapInfo File")
 
     path = os.path.join(dirname, filename)
-    if os.path.isfile(dirname):
-        outDataSource = driver.Open(dirname)
+
+    if os.path.exists(dirname):
+        outDataSource = gdal.OpenEx(dirname, gdal.OF_UPDATE) #allowed_drivers=["MapInfo File"])
     else:
-        outDataSource = driver.Create(dirname, 0,0,0,0, [])
+        outDataSource = driver.Create(dirname, 0,0,0,0)#, ["FORMAT=MIF"])
 
     return outDataSource
 
@@ -293,7 +301,10 @@ def fc_to_gml(outSource, layerName, gdf, epsg, mask, oktmo, p10, gtype):
     # inSource = driver.Open(fr"C:\Users\ya.shatalov\Desktop\Data\1_Проекты\Апшеронское\Apsheronskoe\ФГИСТП_Апшеронское\{layerName}.geojson")
     temp.close()
     
-    gdal.VectorTranslate(outSource, inSource, accessMode="append", geometryType="PROMOTE_TO_MULTI", layerName=layerName, layerCreationOptions=["ENCODING=utf-8"])
+    # gdal.VectorTranslate(outSource, inSource, accessMode="append", geometryType="PROMOTE_TO_MULTI", layerName=layerName, layerCreationOptions=["ENCODING=utf-8"])
+    srs = osr.SpatialReference()
+    srs.ImportFromWkt('LOCAL_CS["Nonearth",UNIT["Meter",1.0]]')
+    gdal.VectorTranslate(outSource, inSource, accessMode="append", layerName=layerName)#, geometryType="PROMOTE_TO_MULTI")#, layerCreationOptions=["ENCODING=cp1251", "BOUNDS=-10000000,-10000000,10000000,10000000"], dstSRS=srs, reproject=False)
     
 def get_layer_name(name, shape_type, include_shape_type, status):
     return name + ("_pr" if status == 1 and name != "AreaBaseDevelopment" else "") + (shape_type if include_shape_type else "")

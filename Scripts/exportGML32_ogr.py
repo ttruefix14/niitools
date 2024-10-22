@@ -763,11 +763,12 @@ def execute():
                     ),
                 )
 
-    arcpy.AddWarning("Есть некорректная геометрия, смотреть файл not_valid.json")
-    with open(
-        os.path.join(arcpy.mp.ArcGISProject("CURRENT").homeFolder, "not_valid.json"), "w"
-    ) as f:
-        json.dump(not_valid_geoms, f)
+    if not_valid_geoms != []:
+        arcpy.AddWarning("Есть некорректная геометрия, смотреть файл not_valid.json")
+        with open(
+            os.path.join(arcpy.mp.ArcGISProject("CURRENT").homeFolder, "not_valid.json"), "w"
+        ) as f:
+            json.dump(not_valid_geoms, f)
 
 
 if __name__ == "__main__":

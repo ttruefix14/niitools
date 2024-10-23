@@ -1,8 +1,11 @@
 import difflib
 import arcpy
+import dateutil.parser
 import pandas as pd
 import re
 import json
+import dateutil
+import datetime
 
 arcpy.SetLogMetadata(False)
 
@@ -248,8 +251,14 @@ class Errors:
             pass
 
     def is_date(self, date, row_index, col, col_required, r_name, b_name):
+
         try:
-            date.strftime("%Y/%m/%d")
+            if isinstance(date, str):
+                if re.fullmatch(r"\d+", date):
+                    raise Exception("Bad date")
+                dateutil.parser.parse(date)
+            else:
+                date.strftime("%Y/%m/%d")
         except:
             self.append(
                 [

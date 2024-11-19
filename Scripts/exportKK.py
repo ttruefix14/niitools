@@ -44,6 +44,8 @@ class Params:
         self.omz_definition = [i.split('<>') for i in params[9].values] if params[8].value else None
         
         self.output_dirname = params[9].valueAsText
+
+        self.vector_format = params[10].valueAsText
         
 
        
@@ -240,12 +242,13 @@ def removeLowerDimension(geom, gtype):
     return None
 
 
-def get_shapefile(dirname, filename):
+def get_shapefile(dirname, filename, vector_format):
     if not os.path.exists(dirname):
         os.makedirs(dirname)
 
     # driver = gdal.GetDriverByName("ESRI Shapefile")
-    driver = gdal.GetDriverByName("MapInfo File")
+    # driver = gdal.GetDriverByName("MapInfo File")
+    driver = gdal.GetDriverByName(vector_format)
 
     path = os.path.join(dirname, filename)
 
@@ -388,9 +391,9 @@ def execute():
         gp_name = get_layer_name(r_name, shape_type, layer_dict["Geometry"] is not None, 1)
 
 
-        fc_to_gml(get_shapefile(os.path.join(params.output_dirname, params.project_type, "Опорный план", layer_dict["Folder"]), op_name), op_name, op_table, epsg, clipping_mask if not no_clip else None, params.OKTMO, p10.p10, gtype)
+        fc_to_gml(get_shapefile(os.path.join(params.output_dirname, params.project_type, "Опорный план", layer_dict["Folder"]), op_name, params.vector_format), op_name, op_table, epsg, clipping_mask if not no_clip else None, params.OKTMO, p10.p10, gtype)
         if gp_table is not None:
-            fc_to_gml(get_shapefile(os.path.join(params.output_dirname, params.project_type, "Генеральный план", layer_dict["Folder"]), gp_name), gp_name, gp_table, epsg, clipping_mask if not no_clip else None, params.OKTMO, p10.p10, gtype)
+            fc_to_gml(get_shapefile(os.path.join(params.output_dirname, params.project_type, "Генеральный план", layer_dict["Folder"]), gp_name, params.vector_format), gp_name, gp_table, epsg, clipping_mask if not no_clip else None, params.OKTMO, p10.p10, gtype)
         
                 
 

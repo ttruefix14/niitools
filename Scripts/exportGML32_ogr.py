@@ -650,17 +650,30 @@ def execute():
         )
 
         if "STATUS" in table.columns and "REG_STATUS" in table.columns:
+            mo_table = table.loc[
+                ~table["CLASSID"].isin(mo_loc)
+                & (
+                    ~table["STATUS"].isin([2, 3])
+                    | (
+                        table["STATUS"].isin([2, 3])
+                        & ~table["REG_STATUS"].isin(params.xsd[1])
+                    )
+                )
+            ]
+
             omz_table = table.loc[
                 table["STATUS"].isin([2, 3])
                 & table["REG_STATUS"].isin(params.xsd[1])
                 & ~table["CLASSID"].isin(fz_loc)
             ]
             if omz_loc:
+                mo_table = pd.concat([mo_table, omz_table.loc[omz_table["CLASSID"].isin(omz_loc)]])
                 omz_table = omz_table.loc[~omz_table["CLASSID"].isin(omz_loc)]
             if params.omz_definition:
                 for field, filt in params.omz_definition:
                     if field not in omz_table:
                         continue
+                    mo_table = pd.concat([mo_table, omz_table.loc[omz_table[field] == filt]])
                     omz_table = omz_table.loc[omz_table[field] != filt]
 
             fc_to_gml(
@@ -673,16 +686,7 @@ def execute():
                 p10.p10,
             )
 
-            mo_table = table.loc[
-                ~table["CLASSID"].isin(mo_loc)
-                & (
-                    ~table["STATUS"].isin([2, 3])
-                    | (
-                        table["STATUS"].isin([2, 3])
-                        & ~table["REG_STATUS"].isin(params.xsd[1])
-                    )
-                )
-            ]
+
         else:
             mo_table = table.loc[~table["CLASSID"].isin(mo_loc)]
 

@@ -214,21 +214,21 @@ class Errors:
 
     def check_oktmo(self, oktmo, row_index, r_name, b_name):
         if isinstance(oktmo, str):
-            if oktmo.isdigit():
+            if re.fullmatch(r'\d{8}|\d{11}', oktmo):
                 return
-        else:
-            self.append(
-                [
-                    b_name,
-                    row_index,
-                    "OKTMO",
-                    "OKTMO",
-                    "Код ОКТМО заполнен неверно",
-                    repr(oktmo)[1:-1] if oktmo else None,
-                    "О",
-                    None,
-                ]
-            )
+            
+        self.append(
+            [
+                b_name,
+                row_index,
+                "OKTMO",
+                "OKTMO",
+                "Код ОКТМО заполнен неверно",
+                repr(oktmo)[1:-1] if oktmo else None,
+                "О",
+                None,
+            ]
+        )
 
     def is_correct_uuid(self, gid, row_index, r_name, b_name):
         if not re.search(

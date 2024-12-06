@@ -15,5 +15,6 @@ for r, dirname, filenames in os.walk(arcpy.env.workspace):
         arcpy.MakeFeatureLayer_management(shapefile, layerName)
         notHasFeatures = arcpy.GetCount_management(layerName).getOutput(0)
         arcpy.AddMessage(str(notHasFeatures))
-        if int(arcpy.GetCount_management(layerName).getOutput(0)) == 0:
-            arcpy.Delete_management(shapefile)
+        if int(notHasFeatures) == 0:
+            arcpy.AddMessage("Deleting shapefile: " + shapefile)
+            arcpy.management.Delete(shapefile)

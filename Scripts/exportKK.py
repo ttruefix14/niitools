@@ -365,9 +365,13 @@ def execute():
 
         op_table = table
         gp_table = None
-        if status_field:
-            op_table = table.loc[table[status_field] == 1]
-            gp_table = table.loc[table[status_field] != 1]
+        if r_name == "TerritorialZone":
+            gp_table = table
+            op_table = None
+        else:
+            if status_field:
+                op_table = table.loc[table[status_field] == 1]
+                gp_table = table.loc[table[status_field] != 1]
 
 
         no_clip = lyr.name in [lyr.name for lyr in params.mask_exceptions]
@@ -390,10 +394,10 @@ def execute():
         op_name = get_layer_name(r_name, shape_type, layer_dict["Geometry"] is not None, 0)
         gp_name = get_layer_name(r_name, shape_type, layer_dict["Geometry"] is not None, 1)
 
-
-        fc_to_gml(get_shapefile(os.path.join(params.output_dirname, params.project_type, "Опорный план", layer_dict["Folder"]), op_name, params.vector_format), op_name, op_table, epsg, clipping_mask if not no_clip else None, params.OKTMO, p10.p10, gtype)
-        if gp_table is not None:
-            fc_to_gml(get_shapefile(os.path.join(params.output_dirname, params.project_type, "Генеральный план", layer_dict["Folder"]), gp_name, params.vector_format), gp_name, gp_table, epsg, clipping_mask if not no_clip else None, params.OKTMO, p10.p10, gtype)
+        if op_table is not None and op_table.shape[0] > 0:
+            fc_to_gml(get_shapefile(os.path.join(params.output_dirname, params.project_type, "Опорный план", layer_dict["Folder"]), op_name, params.vector_format), op_name, op_table, epsg, clipping_mask if not no_clip else None, params.OKTMO, p10.p10, gtype)
+        if gp_table is not None and gp_table.shape[0] > 0:
+            fc_to_gml(get_shapefile(os.path.join(params.output_dirname, params.project_type, params.project_type, layer_dict["Folder"]), gp_name, params.vector_format), gp_name, gp_table, epsg, clipping_mask if not no_clip else None, params.OKTMO, p10.p10, gtype)
         
                 
 

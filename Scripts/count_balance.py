@@ -122,7 +122,7 @@ def execute():
 
     arcpy.management.MakeFeatureLayer(output_db+"\AdmeNP", "AdmeNP_PLAN", "STATUS_ADM = 2")
 
-    arcpy.management.MakeFeatureLayer(output_db+"\AdmeNP", "AdmeNP_all", "Note IN ('не изменяемая', 'планируемая')")
+    arcpy.management.MakeFeatureLayer(output_db+"\AdmeNP", "AdmeNP_all", "Note  <> 'изменяемая'")
     
     ###Добавляем слои существующих и планируемых категорий
     arcpy.env.workspace = "CURRENT"
@@ -178,7 +178,7 @@ def execute():
     SI_MO['Shape_Area'] = SI_MO.apply(lambda row: row["SHAPE@"].area if row["SHAPE@"].area > 500 else (501 if row["SHAPE@"].area > 100 else 0), axis=1, result_type='reduce')
 
     # Задаем определенное поле для площади НП
-    fields_AdmeNP = ['NAME', 'SETTL_TYPE', 'NOTE']
+    fields_AdmeNP = ['NAME', 'SETTL_TYPE', 'NOTE', 'STATUS_ADM']
     if area_field_AdmeNP.value:
         fields_AdmeNP.append(area_field_AdmeNP.valueAsText)
     AdmeNP = table_to_data_frame(os.path.join(output_db, 'AdmeNP'), fields_AdmeNP)
@@ -240,7 +240,7 @@ def execute():
     AdmeNP = AdmeNP.merge(NP_type, left_on='SETTL_TYPE', right_on = 'SETTL_TYPE', how = 'left')
     AdmeNP['NAME'] = AdmeNP['NP_TYPE'] + ' ' + AdmeNP['NAME']
 
-    AdmeNP_S = AdmeNP.loc[AdmeNP['NOTE'] != 'планируемая']
+    AdmeNP_S = AdmeNP.loc[AdmeNP['STATUS_ADM'] == 1]
     AdmeNP_P = AdmeNP.loc[AdmeNP['NOTE'] != 'изменяемая']
     noNP = list(set(AdmeNP_P['NAME'].to_list()) - set(AdmeNP_S['NAME'].to_list()))
     if len(noNP) > 0:
@@ -580,14 +580,14 @@ def execute():
         NP_plan_area = AdmeNP_PA['Area'].sum()
 
         if name == 'МО':
-            NP_area = round(areaMO_S, 1) - round(float(AdmeNP.loc[AdmeNP['NOTE'] != 'планируемая', ['Area']].sum()), 1)
+            NP_area = round(areaMO_S, 1) - round(float(AdmeNP.loc[AdmeNP['STATUS_ADM'] == 1, ['Area']].sum()), 1)
             NP_plan_area = round(areaMO_P, 1) - round(float(AdmeNP.loc[AdmeNP['NOTE'] != 'изменяемая', ['Area']].sum()), 1)
 
         if adjustValues:
             SI_NP_A, FZ_NP_A = adjust_values(SI_NP_A, FZ_NP_A, NP_area, NP_plan_area, name, adjustValues.value)
         ##
         if name == 'МО':
-            MOO = pd.DataFrame([[None, 'МО', areaMO_S - float(AdmeNP.loc[AdmeNP['NOTE'] != 'планируемая', ['Area']].sum()), areaMO_P - float(AdmeNP.loc[AdmeNP['NOTE'] != 'изменяемая', ['Area']].sum())]], columns=['Ext_Zone_Code', 'Zone', 'SI', 'SI+PLAN'])
+            MOO = pd.DataFrame([[None, 'МО', areaMO_S - float(AdmeNP.loc[AdmeNP['STATUS_ADM'] == 1, ['Area']].sum()), areaMO_P - float(AdmeNP.loc[AdmeNP['NOTE'] != 'изменяемая', ['Area']].sum())]], columns=['Ext_Zone_Code', 'Zone', 'SI', 'SI+PLAN'])
             SI_FZ = SI_FZ.append(MOO, ignore_index=False, verify_integrity=False, sort=False)
         ##
 

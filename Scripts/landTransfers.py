@@ -23,6 +23,8 @@ class Params:
         self.du_type = params[8].valueAsText
         
         self.output_xls = params[9].valueAsText
+
+        self.mask_layer = params[10].value
                 
 def table_to_data_frame(in_table, input_fields=None, where_clause=None):
     """Function will convert an arcgis table into a pandas dataframe with an object ID index, and the selected
@@ -135,14 +137,30 @@ def main():
     # m = aprx.activeMap
 
     # Выгружаем слои в локальную базу
-    arcpy.conversion.FeatureClassToFeatureClass(params.NP, output_db, "NP_plan", f"{params.np_status_field} <> 'изменяемая'")
-    arcpy.conversion.FeatureClassToFeatureClass(params.NP, output_db, "NP_ex", "STATUS_ADM = 1")
-    arcpy.conversion.FeatureClassToFeatureClass(params.ZU, output_db, "ZU")
-    arcpy.conversion.FeatureClassToFeatureClass(params.FZ, output_db, "FZ")
-    arcpy.conversion.FeatureClassToFeatureClass(params.LU, output_db, "LU_ex", "STATUS = 1" if not params.LU_NOTE else f"STATUS = 1 And ({params.LU_NOTE} <> 'Двойной учет' Or {params.LU_NOTE} IS NULL)")
-    arcpy.conversion.FeatureClassToFeatureClass(params.LU, output_db, "LU_plan", "STATUS = 2")
-    arcpy.conversion.FeatureClassToFeatureClass(params.DU, output_db, "DU_temp")#, "DU_TYPE IN ('После 2016/Нет информации', 'искл') And (Note <> 'Амнистия' Or Note IS NULL)")
-    arcpy.management.Dissolve(output_db + "\\DU_temp", output_db + '\\DU', ['DU_TYPE'])
+    if params.mask_layer:
+        arcpy.conversion.FeatureClassToFeatureClass(params.NP, output_db, "NP_plan_1", f"{params.np_status_field} <> 'изменяемая'")
+        arcpy.conversion.FeatureClassToFeatureClass(params.NP, output_db, "NP_ex_1", "STATUS_ADM = 1")
+        arcpy.conversion.FeatureClassToFeatureClass(params.ZU, output_db, "ZU")
+        arcpy.conversion.FeatureClassToFeatureClass(params.FZ, output_db, "FZ_1")
+        arcpy.conversion.FeatureClassToFeatureClass(params.LU, output_db, "LU_ex_1", "STATUS = 1" if not params.LU_NOTE else f"STATUS = 1 And ({params.LU_NOTE} <> 'Двойной учет' Or {params.LU_NOTE} IS NULL)")
+        arcpy.conversion.FeatureClassToFeatureClass(params.LU, output_db, "LU_plan", "STATUS = 2")
+        arcpy.conversion.FeatureClassToFeatureClass(params.DU, output_db, "DU_temp")#, "DU_TYPE IN ('После 2016/Нет информации', 'искл') And (Note <> 'Амнистия' Or Note IS NULL)")
+        arcpy.management.Dissolve(output_db + "\\DU_temp", output_db + '\\DU_1', ['DU_TYPE'])
+
+        arcpy.analysis.Clip(output_db + "\\NP_plan_1", params.mask_layer, output_db + "\\NP_plan")
+        arcpy.analysis.Clip(output_db + "\\NP_ex_1", params.mask_layer, output_db + "\\NP_ex")
+        arcpy.analysis.Clip(output_db + "\\FZ_1", params.mask_layer, output_db + "\\FZ")
+        arcpy.analysis.Clip(output_db + "\\LU_ex_1", params.mask_layer, output_db + "\\LU_ex")
+        arcpy.analysis.Clip(output_db + "\\DU_1", params.mask_layer, output_db + "\\DU")
+    else:
+        arcpy.conversion.FeatureClassToFeatureClass(params.NP, output_db, "NP_plan", f"{params.np_status_field} <> 'изменяемая'")
+        arcpy.conversion.FeatureClassToFeatureClass(params.NP, output_db, "NP_ex", "STATUS_ADM = 1")
+        arcpy.conversion.FeatureClassToFeatureClass(params.ZU, output_db, "ZU")
+        arcpy.conversion.FeatureClassToFeatureClass(params.FZ, output_db, "FZ")
+        arcpy.conversion.FeatureClassToFeatureClass(params.LU, output_db, "LU_ex", "STATUS = 1" if not params.LU_NOTE else f"STATUS = 1 And ({params.LU_NOTE} <> 'Двойной учет' Or {params.LU_NOTE} IS NULL)")
+        arcpy.conversion.FeatureClassToFeatureClass(params.LU, output_db, "LU_plan", "STATUS = 2")
+        arcpy.conversion.FeatureClassToFeatureClass(params.DU, output_db, "DU_temp")#, "DU_TYPE IN ('После 2016/Нет информации', 'искл') And (Note <> 'Амнистия' Or Note IS NULL)")
+        arcpy.management.Dissolve(output_db + "\\DU_temp", output_db + '\\DU', ['DU_TYPE'])
 
     # Прописываем названия слоев
     NP_plan = os.path.join(output_db, "NP_plan")

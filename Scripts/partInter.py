@@ -129,6 +129,7 @@ def execute():
         current_df['objects'] = current_df.apply(lambda row: result[row[field]], axis=1, result_type='reduce')
         current_df = current_df.sort_values(by='part', ascending=False)
         current_df = current_df.drop_duplicates(subset=field, keep="first")
+        current_df['count'] = current_df.apply(lambda row: len(result[row[field]]), axis=1, result_type='reduce')
 
         current_df = current_df.round(2)
 
@@ -144,7 +145,8 @@ def execute():
                 'AREA': 'Площадь пересечения', 
                 'AREA_old': 'Исходная площадь', 
                 'part': 'Доля площади преобладающего элемента', 
-                'objects': 'Площади всех элементов'
+                'objects': 'Площади всех элементов',
+                'count': 'Количество элементов'
             }
                     )
         current_df.to_excel(writer, sheet_name = field, index = False)

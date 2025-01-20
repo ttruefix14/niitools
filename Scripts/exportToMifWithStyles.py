@@ -12,7 +12,7 @@ def hsv2rgb(h,s,v):
 def get_brush(rgb, is_hs=False):
     color_code = (rgb[0]*65536) + (rgb[1]*256) + rgb[2]
     if is_hs:
-        return f"Brush (107, 13421772, {color_code})"
+        return f"Brush (107, 13421772, {color_code})" # можно поставить штриховку 5
     return f"Brush (2, {color_code})"
 
 def get_brushes(input_layer):

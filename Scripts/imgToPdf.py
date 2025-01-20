@@ -1,7 +1,7 @@
 import os
 import sys
 from PIL import Image
-Image.MAX_IMAGE_PIXELS = 1_100_000_000
+Image.MAX_IMAGE_PIXELS = 1_500_000_000
 
 import importlib
 arcpy_loader = importlib.find_loader('arcpy')

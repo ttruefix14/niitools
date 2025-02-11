@@ -320,6 +320,8 @@ class Errors:
             return True
         
         for cond_col, values in self.p10[layer][col][3].items():
+            if row[cond_col] is None:
+                continue
             if -1 * row[cond_col] in values or row[cond_col] not in values:
                 # arcpy.AddMessage(str(id) + " " + str(values) + " " + layer + " " + col + " " + cond_col + " " + str(row[cond_col]))
                 return False

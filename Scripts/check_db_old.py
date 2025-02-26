@@ -25,7 +25,7 @@ class Errors:
         xls = pd.ExcelFile(p10)
         cid_table = pd.read_excel(xls, 'ClassID')
         cid_table = cid_table.where(pd.notnull(cid_table), None)
-        atr_table = pd.read_excel(xls, 'Общий')
+        atr_table = pd.read_excel(xls, 'Атрибуты')
         atr_table = atr_table.where(pd.notnull(atr_table), None)
         dom_table = pd.read_excel(xls, 'Справочники')
         dom_table = dom_table.where(pd.notnull(dom_table), None)

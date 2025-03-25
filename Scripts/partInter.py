@@ -105,9 +105,11 @@ def execute():
 
 
     df = table_to_data_frame(params.output_fc)
+    df = df.loc[df['SHAPE@'].notnull()]
     df['AREA'] = df.apply(lambda row: row['SHAPE@'].area, axis=1, result_type='reduce')
 
     df_2 = table_to_data_frame(params.layer_2)
+    df_2 = df_2.loc[df_2['SHAPE@'].notnull()]
     df_2['AREA'] = df_2.apply(lambda row: row['SHAPE@'].area if row['SHAPE@'] else 0, axis=1, result_type='reduce')
 
     for field in params.fields:

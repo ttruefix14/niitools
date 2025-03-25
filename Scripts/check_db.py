@@ -2,6 +2,7 @@ import difflib
 import arcpy
 import dateutil.parser
 import pandas as pd
+from numpy import nan
 import re
 import json
 import dateutil
@@ -275,7 +276,7 @@ class Errors:
         return
 
     def good_str(self, string):
-        if string == None or str(string).strip() == "":
+        if pd.isnull(string) or str(string).strip() == "":
             return False, "Пустая строка", ""
         string = str(string)
         bad = re.findall(r"[&\n\t\r\'<>\u0008\x02]+", string)
@@ -316,11 +317,11 @@ class Errors:
                 return
     
     def check_condition(self, layer, col, row):
-        if self.p10[layer][col][3] is None:
+        if pd.isnull(self.p10[layer][col][3]):
             return True
         
         for cond_col, values in self.p10[layer][col][3].items():
-            if row[cond_col] is None:
+            if pd.isnull(row[cond_col]):
                 continue
             if -1 * row[cond_col] in values or row[cond_col] not in values:
                 # arcpy.AddMessage(str(id) + " " + str(values) + " " + layer + " " + col + " " + cond_col + " " + str(row[cond_col]))
@@ -460,7 +461,7 @@ def execute():
                     continue
                 
                 if col_type == "Целое":
-                    if row[col] == None or row[col] == 0:
+                    if pd.isnull(row[col]) or row[col] == 0:
                         errors.append(
                             [
                                 b_name,
@@ -475,7 +476,7 @@ def execute():
                         )
                     continue
                 elif col_type == "Вещественное":
-                    if row[col] == None or row[col] == 0:
+                    if pd.isnull(row[col]) or row[col] == 0:
                         errors.append(
                             [
                                 b_name,

@@ -55,7 +55,7 @@ class P10:
         xls = pd.ExcelFile(p10)
         cid_table = pd.read_excel(xls, 'ClassID')
         cid_table = cid_table.where(pd.notnull(cid_table), None)
-        atr_table = pd.read_excel(xls, 'Общий')
+        atr_table = pd.read_excel(xls, 'Атрибуты')
         atr_table = atr_table.where(pd.notnull(atr_table), None)
         dom_table = pd.read_excel(xls, 'Справочники')
         dom_table = dom_table.where(pd.notnull(dom_table), None)
@@ -123,9 +123,10 @@ class P10:
             df[column] = None
         check_columns = required_columns# - missing_columns
         check_columns = sorted(list(check_columns), key=lambda x: required_columns_list.index(x))
+        df = df[check_columns + ['geometry']]
         df.columns=df.columns.str.slice(0, 10) # обрезаем до 10 символов
-        check_columns = [column[:10] for column in check_columns]
-        return df[check_columns + ['geometry']]
+        # check_columns = [column[:10] for column in check_columns]
+        return df
     
 def tab_to_gdf(in_table, input_fields=None, where_clause=None):
         """Function will convert an arcgis table into a pandas dataframe with an object ID index, and the selected
@@ -159,6 +160,10 @@ def get_dimension(shape_type, d_dict={'point': 1, 'polyline': 2, 'polygon': 4}):
 
 def makeValidForP10(row_object, name, OKTMO, p10):
     name = name.split('_')[0]
+    # дичайший костыль
+    temp_dict = p10[name].copy()
+    for key, value in temp_dict.items():
+        p10[name][key[:10]] = p10[name].pop(key)
 
     for col, value in row_object.items():
         # если колонка не по приказу пропускаем
@@ -354,7 +359,7 @@ def execute():
 
         # Проверка соответствия названий столбцов десятому приказу
         table = p10.check_columns(table, r_name, b_name, params.rename_cols)
-        
+
 
 
         

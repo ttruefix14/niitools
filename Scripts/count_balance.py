@@ -221,6 +221,9 @@ def execute():
     SI_NP = SI_NP.round(1)
     FZ_MO = FZ_MO.round(1)
     SI_MO = SI_MO.round(1)
+    FZ_NP['Ext_Zone_Code'] = FZ_NP['Ext_Zone_Code'].str.replace("ДР", "ПЛ", regex=True)
+    FZ_MO['Ext_Zone_Code'] = FZ_MO['Ext_Zone_Code'].str.replace("ДР", "ПЛ", regex=True)
+
     AdmeNP = AdmeNP.round(1)
 
 
